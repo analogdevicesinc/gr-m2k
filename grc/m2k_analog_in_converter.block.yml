@@ -1,0 +1,28 @@
+id: m2k_analog_in_converter
+label: M2K Analog In Converter
+flags: [ python ]
+
+parameters:
+  -   id: uri
+      label: URI
+      dtype: string
+      default: 'ip:192.168.2.1'
+
+inputs:
+  -   domain: stream
+      dtype: short
+      multiplicity: 1
+
+outputs:
+  -   domain: stream
+      dtype: float
+      multiplicity: 1
+
+templates:
+  imports: import m2k
+  make: m2k.analog_in_converter(${uri})
+
+documentation: |-
+  This block converts raw ADC samples into voltage
+
+file_format: 1

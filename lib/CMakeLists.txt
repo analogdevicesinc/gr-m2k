@@ -26,6 +26,7 @@ include_directories(${Boost_INCLUDE_DIR} ${IIO_INCLUDE_DIRS} ${LIBM2K_INCLUDE_DI
 link_directories(${Boost_LIBRARY_DIRS})
 
 list(APPEND m2k_sources
+        analog_in_converter_impl.cc
     )
 
 set(m2k_sources "${m2k_sources}" PARENT_SCOPE)
