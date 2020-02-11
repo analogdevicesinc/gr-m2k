@@ -3,3 +3,4 @@
       - 'Analog':
           - m2k_analog_in_converter
           - m2k_analog_in_source
+          - m2k_analog_out_converter
