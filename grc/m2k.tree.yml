@@ -2,3 +2,4 @@
   - 'ADALM-2000':
       - 'Analog':
           - m2k_analog_in_converter
+          - m2k_analog_in_source

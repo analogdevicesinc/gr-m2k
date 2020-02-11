@@ -1,0 +1,150 @@
+id: m2k_analog_in_source
+label: M2K Analog In Source
+flags: [ python ]
+
+parameters:
+  - id: uri
+    label: URI
+    dtype: string
+    default: 'ip:192.168.2.1'
+
+  - id: buffer_size
+    label: Buffer size
+    dtype: int
+    default: 0x8000
+
+  - id: enable_ch1
+    label: Enable ch 1
+    dtype: bool
+    default: True
+
+  - id: enable_ch2
+    label: Enable ch 2
+    dtype: bool
+    default: True
+
+  - id: range_1
+    label: Range ch 1
+    dtype: enum
+    options: ['0', '1']
+    option_labels: ['low', 'high']
+
+  - id: range_2
+    label: Range ch 2
+    dtype: enum
+    options: ['0', '1']
+    option_labels: ['low', 'high']
+
+  - id: calibrateADC
+    label: Calibrate ADC
+    dtype: bool
+    default: True
+
+  - id: type
+    label: Stream voltage
+    dtype: bool
+    default: True
+
+  - id: sampling_frequency
+    label: Sampling frequency
+    dtype: float
+    default: 100000
+
+  - id: oversampling_ratio
+    label: Oversampling ratio
+    dtype: int
+    default: 1
+
+  - id: kernel_buffers
+    label: Kernel buffers
+    dtype: int
+    default: 4
+
+  - id: trigger_condition_ch1
+    label: Trigger condition ch 1
+    dtype: enum
+    options: ['0', '1', '2', '3']
+    option_labels: ['rising edge', 'falling edge', 'low level', 'high level']
+
+  - id: trigger_condition_ch2
+    label: Trigger condition ch 2
+    dtype: enum
+    options: ['0', '1', '2', '3']
+    option_labels: ['rising edge', 'falling edge', 'low level', 'high level']
+
+  - id: trigger_mode_ch1
+    label: Trigger Mode ch 1
+    dtype: enum
+    options: ['0', '1']
+    option_labels: ['always', 'analog']
+
+  - id: trigger_mode_ch2
+    label: Trigger Mode ch 2
+    dtype: enum
+    options: ['0', '1']
+    option_labels: ['always', 'analog']
+
+  - id: trigger_source
+    label: Trigger source
+    dtype: enum
+    options: ['0', '1', '2', '3', '4']
+    option_labels: ['channel 1', 'channel 2', 'channel 1 or channel 2', 'channel 1 and channel 2', 'channel 1 xor channel 2']
+
+  - id: trigger_delay
+    label: Trigger delay
+    dtype: int
+    default: 0
+
+  - id: trigger_level_ch1
+    label: Trigger level ch 1
+    dtype: float
+    default: 1
+
+  - id: trigger_level_ch2
+    label: Trigger level ch 2
+    dtype: float
+    default: 1
+
+
+asserts:
+  - ${sampling_frequency in [1000, 10000, 100000, 1000000, 10000000, 100000000]}
+  - ${kernel_buffers > 0 and kernel_buffers <= 64}
+
+
+outputs:
+  - domain: stream
+    dtype: ${ ('float' if type else 'short') }
+    multiplicity: ${int(enable_ch1) + int(enable_ch2)}
+  - domain: message
+    id: msg
+    optional: true
+
+
+templates:
+  imports: import m2k
+  make: m2k.analog_in_source(${uri},
+    ${buffer_size},
+    [${enable_ch1}, ${enable_ch2}],
+    [${range_1}, ${range_2}],
+    ${sampling_frequency},
+    ${oversampling_ratio},
+    ${kernel_buffers},
+    ${calibrateADC},
+    ${type},
+    [${trigger_condition_ch1}, ${trigger_condition_ch2}],
+    [${trigger_mode_ch1}, ${trigger_mode_ch2}],
+    ${trigger_source},
+    ${trigger_delay},
+    [${trigger_level_ch1}, ${trigger_level_ch2}])
+  callbacks:
+    - set_params([${range_1}, ${range_2}],
+      ${sampling_frequency},
+      ${oversampling_ratio})
+
+    - set_trigger([${trigger_condition_ch1}, ${trigger_condition_ch2}],
+      [${trigger_mode_ch1}, ${trigger_mode_ch2}],
+      ${trigger_source},
+      ${trigger_delay},
+      [${trigger_level_ch1}, ${trigger_level_ch2}])
+
+file_format: 1

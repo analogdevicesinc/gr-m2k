@@ -24,5 +24,6 @@
 install(FILES
         api.h
         analog_in_converter.h
+        analog_in_source.h
         DESTINATION ${GR_INCLUDE_DIR}/m2k
         )

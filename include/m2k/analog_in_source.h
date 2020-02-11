@@ -1,0 +1,80 @@
+/* -*- c++ -*- */
+/*
+ * Copyright 2019 Analog Devices Inc.
+ *
+ * This is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3, or (at your option)
+ * any later version.
+ *
+ * This software is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this software; see the file COPYING.  If not, write to
+ * the Free Software Foundation, Inc., 51 Franklin Street,
+ * Boston, MA 02110-1301, USA.
+ */
+
+#ifndef INCLUDED_M2K_ANALOG_IN_SOURCE_H
+#define INCLUDED_M2K_ANALOG_IN_SOURCE_H
+
+#include <m2k/api.h>
+#include <gnuradio/sync_block.h>
+
+namespace gr {
+namespace m2k {
+
+/*!
+ * \brief <+description of block+>
+ * \ingroup m2k
+ *
+ */
+class M2K_API analog_in_source
+
+: virtual public gr::sync_block {
+public:
+typedef boost::shared_ptr <analog_in_source> sptr;
+
+/*!
+ * \brief Return a shared_ptr to a new instance of m2k::analog_in_source.
+ *
+ * To avoid accidental use of raw pointers, m2k::analog_in_source's
+ * constructor is in a private implementation
+ * class. m2k::analog_in_source::make is the public interface for
+ * creating new instances.
+ */
+static sptr make(const std::string &uri,
+                 int buffer_size,
+                 const std::vector<int> &channels,
+                 std::vector<int> ranges,
+                 double sampling_frequency,
+                 int oversampling_ratio,
+                 int kernel_buffers,
+                 bool calibrate_ADC,
+                 bool stream_voltage_values,
+                 std::vector<int> trigger_condition,
+                 std::vector<int> trigger_mode,
+                 int trigger_source,
+                 int trigger_delay,
+                 std::vector<double> trigger_level);
+
+virtual void set_params(std::vector<int> ranges,
+                        double sampling_frequency,
+                        int oversampling_ratio) = 0;
+
+virtual void set_trigger(std::vector<int> trigger_condition,
+                         std::vector<int> trigger_mode,
+                         int trigger_source,
+                         int trigger_delay,
+                         std::vector<double> trigger_level) = 0;
+
+};
+
+
+} // namespace m2k
+} // namespace gr
+
+#endif /* INCLUDED_M2K_ANALOG_IN_SOURCE_H */
