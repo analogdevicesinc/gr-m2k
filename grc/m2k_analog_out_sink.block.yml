@@ -1,0 +1,95 @@
+id: m2k_analog_out_sink
+label: M2K Analog Out Sink
+flags: [ python ]
+
+parameters:
+  - id: uri
+    label: URI
+    dtype: string
+    default: 'ip:192.168.2.1'
+
+  - id: buffer_size
+    label: Buffer size
+    dtype: int
+    default: 0x8000
+
+  - id: cyclic_ch1
+    label: Cyclic channel 1
+    dtype: bool
+    default: False
+
+  - id: cyclic_ch2
+    label: Cyclic channel 2
+    dtype: bool
+    default: False
+
+  - id: calibrateDAC
+    label: Calibrate DAC
+    dtype: bool
+    default: True
+
+  - id: type
+    label: Stream voltage
+    dtype: bool
+    default: True
+
+  - id: sampling_frequency_ch1
+    label: Sampling frequency channel 1
+    dtype: float
+    default: 75000
+
+  - id: sampling_frequency_ch2
+    label: Sampling frequency channel 2
+    dtype: float
+    default: 75000
+
+  - id: oversampling_ratio_ch1
+    label: Oversampling ratio channel 1
+    dtype: int
+    default: 1
+
+  - id: oversampling_ratio_ch2
+    label: Oversampling ratio channel 2
+    dtype: int
+    default: 1
+
+  - id: kernel_buffers_ch1
+    label: Kernel buffers channel 1
+    dtype: int
+    default: 4
+
+  - id: kernel_buffers_ch2
+    label: Kernel buffers channel 2
+    dtype: int
+    default: 4
+
+
+asserts:
+  - ${sampling_frequency_ch1 in [750, 7500, 75000, 750000, 7500000, 75000000]}
+  - ${sampling_frequency_ch2 in [750, 7500, 75000, 750000, 7500000, 75000000]}
+  - ${kernel_buffers_ch1 > 0 and kernel_buffers_ch1 <= 64}
+  - ${kernel_buffers_ch2 > 0 and kernel_buffers_ch2 <= 64}
+
+
+inputs:
+  - domain: stream
+    dtype: ${ ('float' if type else 'short') }
+    multiplicity: 2
+
+
+templates:
+  imports: import m2k
+  make: m2k.analog_out_sink(${uri},
+    ${buffer_size},
+    [${sampling_frequency_ch1}, ${sampling_frequency_ch2}],
+    [${oversampling_ratio_ch1}, ${oversampling_ratio_ch2}],
+    [${kernel_buffers_ch1}, ${kernel_buffers_ch2}],
+    [${cyclic_ch1}, ${cyclic_ch2}],
+    ${calibrateDAC},
+    ${type})
+  callbacks:
+    - set_params([${sampling_frequency_ch1}, ${sampling_frequency_ch2}],
+      [${oversampling_ratio_ch1},
+      ${oversampling_ratio_ch2}])
+
+file_format: 1

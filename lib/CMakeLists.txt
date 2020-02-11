@@ -29,6 +29,7 @@ list(APPEND m2k_sources
         analog_in_converter_impl.cc
         analog_in_source_impl.cc
         analog_out_converter_impl.cc
+        analog_out_sink_impl.cc
     )
 
 set(m2k_sources "${m2k_sources}" PARENT_SCOPE)
