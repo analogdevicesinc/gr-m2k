@@ -22,6 +22,7 @@
 ########################################################################
 cmake_minimum_required(VERSION 3.8)
 project(gr-m2k CXX C)
+enable_testing()
 
 # Set the version information here
 set(VERSION_INFO_MAJOR_VERSION 0)

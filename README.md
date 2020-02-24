@@ -19,3 +19,11 @@ make
 sudo make install  
 cd ../..  
 sudo ldconfig  
+
+## Test gr-m2k
+
+make test  
+
+Make sure to have the following hardware configuration:  
+1+ ---> W1  
+2+ ---> W2
