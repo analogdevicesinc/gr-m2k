@@ -31,6 +31,9 @@ set(VERSION_INFO_MINOR_VERSION 1)
 set(VERSION_INFO_MAINT_VERSION git)
 set(VERSION_INFO_VERSION ${GR_M2K_VERSION_MAJOR}.${GR_M2K_VERSION_MINOR})
 
+# build digital interfaces
+option(DIGITAL "Build the digital interfaces" OFF)
+
 #install to PyBOMBS target prefix if defined
 if (DEFINED ENV{PYBOMBS_PREFIX})
     set(CMAKE_INSTALL_PREFIX $ENV{PYBOMBS_PREFIX})

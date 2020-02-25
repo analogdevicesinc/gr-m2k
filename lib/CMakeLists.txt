@@ -32,6 +32,11 @@ list(APPEND m2k_sources
         analog_out_sink_impl.cc
     )
 
+if (DIGITAL)
+    list(APPEND m2k_sources
+            )
+endif ()
+
 set(m2k_sources "${m2k_sources}" PARENT_SCOPE)
 if (NOT m2k_sources)
     MESSAGE(STATUS "No C++ sources... skipping lib/")

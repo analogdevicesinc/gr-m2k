@@ -11,6 +11,8 @@ GNU Radio blocks for ADALM-2000. More information available at https://wiki.anal
 
 ## How to build it?
 
+When using ADI's chips with gr-m2k, make sure to enable digital option of gr-m2k
+
 git clone https://github.com/analogdevicesinc/gr-m2k.git  
 cd gr-m2k  
 mkdir build && cd build  

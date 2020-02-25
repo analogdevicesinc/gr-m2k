@@ -36,6 +36,10 @@ endif ()
 include(GrSwig)
 include(GrPython)
 
+if(DIGITAL)
+    set(GR_SWIG_FLAGS ${GR_SWIG_FLAGS} -DGR_DIGITAL)
+endif(DIGITAL)
+
 ########################################################################
 # Setup swig generation
 ########################################################################

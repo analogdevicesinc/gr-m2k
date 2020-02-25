@@ -18,4 +18,8 @@
 # Boston, MA 02110-1301, USA.
 
 file(GLOB yml_files "*.yml")
+
+if (NOT DIGITAL)
+endif()
+
 install(FILES ${yml_files} DESTINATION ${GRC_BLOCKS_DIR})
