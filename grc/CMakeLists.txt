@@ -20,6 +20,7 @@
 file(GLOB yml_files "*.yml")
 
 if (NOT DIGITAL)
+    list(REMOVE_ITEM yml_files ${CMAKE_CURRENT_SOURCE_DIR}/m2k_adf4350_sink.block.yml)
 endif()
 
 install(FILES ${yml_files} DESTINATION ${GRC_BLOCKS_DIR})

@@ -1,0 +1,208 @@
+id: m2k_adf4350_sink
+label: M2K ADF4350 Sink
+flags: [ python ]
+
+parameters:
+  -   id: uri
+      label: URI
+      dtype: string
+      default: 'ip:192.168.2.1'
+
+  -   id: clock
+      label: clock
+      dtype: int
+      default: 0
+
+  -   id: mosi
+      label: mosi
+      dtype: int
+      default: 1
+
+  -   id: miso
+      label: miso
+      dtype: int
+      default: 2
+
+  -   id: chip_select
+      label: chip select
+      dtype: int
+      default: 3
+
+  -   id: clkin
+      label: clkin
+      dtype: int
+      default: 10000000
+      hide: part
+
+  -   id: channel_spacing
+      label: channel spacing
+      dtype: int
+      default: 10000
+      hide: part
+
+  -   id: power_up_frequency
+      label: power up frequency
+      dtype: int
+      default: 2500000000
+      hide: part
+
+  -   id: reference_div_factor
+      label: reference div factor
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: reference_doubler_enable
+      label: reference doubler enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: reference_div2_enable
+      label: reference div2 enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: phase_detector_polarity_positive_enable
+      label: phase detector polarity positive enable
+      dtype: int
+      default: 1
+      hide: part
+
+  -   id: lock_detect_precision_6ns_enable
+      label: lock detect precision 6ns enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: lock_detect_function_integer_n_enable
+      label: lock detect function integer n enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: charge_pump_current
+      label: charge pump current
+      dtype: int
+      default: 2500
+      hide: part
+
+  -   id: muxout_select
+      label: muxout select
+      dtype: int
+      default: 1
+      hide: part
+
+  -   id: low_spur_mode_enable
+      label: low spur mode enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: cycle_slip_reduction_enable
+      label: cycle slip reduction enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: charge_cancellation_enable
+      label: charge cancellation enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: anti_backlash_3ns_enable
+      label: anti backlash 3ns enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: band_select_clock_mode_high_enable
+      label: band select clock mode high enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: clk_divider_12bit
+      label: clk divider 12bit
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: clk_divider_mode
+      label: clk divider mode
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: aux_output_enable
+      label: aux output enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: aux_output_fundamental_enable
+      label: aux output fundamental enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: mute_till_lock_enable
+      label: mute till lock enable
+      dtype: int
+      default: 0
+      hide: part
+
+  -   id: output_power
+      label: output power
+      dtype: int
+      default: 3
+      hide: part
+
+  -   id: aux_output_power
+      label: aux output power
+      dtype: int
+      default: 0
+      hide: part
+
+inputs:
+  -   domain: message
+      id: msg
+      optional: false
+
+templates:
+  imports: import m2k
+  make: m2k.adf4350_sink(${uri},
+                         ${clock},
+                         ${mosi},
+                         ${miso},
+                         ${chip_select},
+                         ${clkin},
+                         ${channel_spacing},
+                         ${power_up_frequency},
+                         ${reference_div_factor},
+                         ${reference_doubler_enable},
+                         ${reference_div2_enable},
+                         ${phase_detector_polarity_positive_enable},
+                         ${lock_detect_precision_6ns_enable},
+                         ${lock_detect_function_integer_n_enable},
+                         ${charge_pump_current},
+                         ${muxout_select},
+                         ${low_spur_mode_enable},
+                         ${cycle_slip_reduction_enable},
+                         ${charge_cancellation_enable},
+                         ${anti_backlash_3ns_enable},
+                         ${band_select_clock_mode_high_enable},
+                         ${clk_divider_12bit},
+                         ${clk_divider_mode},
+                         ${aux_output_enable},
+                         ${aux_output_fundamental_enable},
+                         ${mute_till_lock_enable},
+                         ${output_power},
+                         ${aux_output_power})
+
+documentation: |-
+  This block allows the communication between ADALM2000 and ADF4350
+
+file_format: 1

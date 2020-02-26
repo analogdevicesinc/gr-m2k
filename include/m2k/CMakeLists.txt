@@ -24,6 +24,7 @@
 file(GLOB headers "*.h")
 
 if (NOT DIGITAL)
+    list(REMOVE_ITEM headers ${CMAKE_CURRENT_SOURCE_DIR}/adf4350_sink.h)
 endif()
 
 install(FILES

@@ -34,6 +34,8 @@ list(APPEND m2k_sources
 
 if (DIGITAL)
     list(APPEND m2k_sources
+            adf4350_sink_impl.cc
+            drivers/adf4350.c
             )
 endif ()
 
