@@ -141,7 +141,7 @@ adf4350_sink_impl::adf4350_sink_impl(const std::string &uri,
                 gr::io_signature::make(0, 0, 0)),
     d_uri(uri)
 {
-    libm2k::contexts::M2k *context = analog_in_source_impl::get_context(uri);
+    libm2k::context::M2k *context = analog_in_source_impl::get_context(uri);
     m2k_spi_init m2KSpiInit;
     m2KSpiInit.clock = clock;
     m2KSpiInit.mosi = mosi;

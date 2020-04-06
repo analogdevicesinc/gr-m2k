@@ -78,7 +78,7 @@ analog_in_source_impl::analog_in_source_impl(const std::string &uri,
     d_channels(channels),
     d_stream_voltage_values(stream_voltage_values)
 {
-    libm2k::contexts::M2k *context = analog_in_source_impl::get_context(uri);
+    libm2k::context::M2k *context = analog_in_source_impl::get_context(uri);
     d_analog_in = context->getAnalogIn();
 
     d_analog_in->setKernelBuffersCount(kernel_buffers);
@@ -137,15 +137,15 @@ void analog_in_source_impl::set_trigger(std::vector<int> trigger_condition,
     trigger->setAnalogDelay(trigger_delay);
 }
 
-libm2k::contexts::M2k *analog_in_source_impl::get_context(const std::string &uri)
+libm2k::context::M2k *analog_in_source_impl::get_context(const std::string &uri)
 {
     auto element = s_contexts.find(uri);
     if (element == s_contexts.end()) {
-        libm2k::contexts::M2k *ctx = libm2k::contexts::m2kOpen(uri.c_str());
+	libm2k::context::M2k *ctx = libm2k::context::m2kOpen(uri.c_str());
         if (ctx == nullptr) {
             throw std::runtime_error("Unable to create the context!");
         }
-        s_contexts.insert(std::pair<std::string, libm2k::contexts::M2k *>(ctx->getUri(), ctx));
+	s_contexts.insert(std::pair<std::string, libm2k::context::M2k *>(ctx->getUri(), ctx));
         return ctx;
     }
     return element->second;
@@ -156,7 +156,7 @@ void analog_in_source_impl::remove_contexts(const std::string &uri)
     boost::lock_guard <boost::mutex> lock(s_ctx_mutex);
     auto element = s_contexts.find(uri);
     if (element != s_contexts.end()) {
-        libm2k::contexts::contextClose(element->second, true);
+	libm2k::context::contextClose(element->second, true);
         s_contexts.erase(element);
     }
 }

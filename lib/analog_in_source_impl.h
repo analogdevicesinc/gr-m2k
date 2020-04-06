@@ -28,7 +28,7 @@
 namespace gr {
 namespace m2k {
 
-static std::map<std::string, libm2k::contexts::M2k *> s_contexts;
+static std::map<std::string, libm2k::context::M2k *> s_contexts;
 static boost::mutex s_ctx_mutex;
 
 class analog_in_source_impl : public analog_in_source {
@@ -75,7 +75,7 @@ public:
                      int trigger_delay,
                      std::vector<double> trigger_level);
 
-    static libm2k::contexts::M2k *get_context(const std::string &uri);
+    static libm2k::context::M2k *get_context(const std::string &uri);
 
     static void remove_contexts(const std::string &uri);
 };

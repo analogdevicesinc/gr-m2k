@@ -32,7 +32,7 @@ private:
     libm2k::analog::M2kAnalogIn *d_analog_in;
 
 public:
-    analog_in_converter_impl(libm2k::contexts::M2k *context);
+    analog_in_converter_impl(libm2k::context::M2k *context);
 
     ~analog_in_converter_impl();
 

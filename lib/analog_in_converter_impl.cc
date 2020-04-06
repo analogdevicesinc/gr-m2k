@@ -38,13 +38,13 @@ analog_in_converter::make(const std::string &uri)
 }
 
 analog_in_converter::sptr
-analog_in_converter::make_from(libm2k::contexts::M2k *context)
+analog_in_converter::make_from(libm2k::context::M2k *context)
 {
     return gnuradio::get_initial_sptr
         (new analog_in_converter_impl(context));
 }
 
-analog_in_converter_impl::analog_in_converter_impl(libm2k::contexts::M2k *context)
+analog_in_converter_impl::analog_in_converter_impl(libm2k::context::M2k *context)
     : gr::sync_block("analog_in_converter",
                      gr::io_signature::make(1, 1, sizeof(short)),
                      gr::io_signature::make(1, 1, sizeof(float)))
