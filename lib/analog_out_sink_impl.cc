@@ -61,7 +61,7 @@ analog_out_sink_impl::analog_out_sink_impl(const std::string &uri,
     d_buffer_size(buffer_size),
     d_stream_voltage_values(input_voltage)
 {
-    libm2k::contexts::M2k *context = analog_in_source_impl::get_context(uri);
+    libm2k::context::M2k *context = analog_in_source_impl::get_context(uri);
     d_analog_out = context->getAnalogOut();
 
     d_analog_out->stop();

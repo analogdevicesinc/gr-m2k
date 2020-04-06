@@ -32,7 +32,7 @@ private:
     libm2k::analog::M2kAnalogOut *d_analog_out;
 
 public:
-    analog_out_converter_impl(libm2k::contexts::M2k *context);
+    analog_out_converter_impl(libm2k::context::M2k *context);
 
     ~analog_out_converter_impl();
 

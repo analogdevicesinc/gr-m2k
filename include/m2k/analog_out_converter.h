@@ -46,7 +46,7 @@ public:
      */
     static sptr make(const std::string &uri);
 
-    static sptr make_from(libm2k::contexts::M2k *context);
+    static sptr make_from(libm2k::context::M2k *context);
 
 };
 
