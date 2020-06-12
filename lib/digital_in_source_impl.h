@@ -37,6 +37,7 @@ private:
 	unsigned int d_sample_index;
 	unsigned long d_items_in_buffer;
 	const unsigned short *d_raw_samples;
+
 public:
 	digital_in_source_impl(const std::string &uri,
 			       int buffer_size,
@@ -53,6 +54,8 @@ public:
 	void set_params(double sampling_frequency);
 
 	unsigned short get_channel_value(unsigned int channel, unsigned short sample);
+
+	void set_sync_with_analog(bool sync) override;
 };
 
 } // namespace m2k

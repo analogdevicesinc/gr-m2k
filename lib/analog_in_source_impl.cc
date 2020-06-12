@@ -28,6 +28,7 @@
 #include <libm2k/analog/m2kanalogin.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include "block_communication.h"
 
 namespace gr {
 namespace m2k {

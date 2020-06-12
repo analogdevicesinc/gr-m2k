@@ -27,6 +27,7 @@
 #include <libm2k/m2k.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include "block_communication.h"
 
 namespace gr {
 namespace m2k {
@@ -78,9 +79,31 @@ int digital_in_source_impl::work(int noutput_items,
 				gr_vector_const_void_star &input_items,
 				gr_vector_void_star &output_items)
 {
+
+//	static int attempt = 0;
+//	if (attempt < 5) {
+//		attempt++;
+//		std::cerr << "Trying again next work!!!";
+//		return 0;
+//	}
+
+//	attempt = 0;
+
 	if (!d_items_in_buffer) {
 		try {
-			d_raw_samples = d_digital->getSamplesP(d_buffer_size);
+			if (block_communication::get_instance().is_sync_requested(d_uri)) {
+				if (block_communication::get_instance().can_capture(d_uri, block_communication::SYNC_DEVICE::DIGITAL)) {
+					d_raw_samples = d_digital->getSamplesP(d_buffer_size);
+					block_communication::get_instance().data_captured(d_uri, block_communication::SYNC_DEVICE::DIGITAL);
+				} else {
+					/* Can't capture yet return 0 items produced,
+					 work will be called again */
+					std::cerr << "Waiting for analog to capture!";
+					return 0;
+				}
+			} else {
+				d_raw_samples = d_digital->getSamplesP(d_buffer_size);
+			}
 		} catch (std::exception &e) {
 			std::cout << e.what() << std::endl;
 			return -1;
@@ -92,21 +115,20 @@ int digital_in_source_impl::work(int noutput_items,
 	unsigned long nb_samples = std::min(d_items_in_buffer, (unsigned long) noutput_items);
 	unsigned int sample_index, channel_index, out_stream_index;
 
-	for (out_stream_index = 0; out_stream_index < output_items.size(); out_stream_index++) {
-		if (!d_sample_index) {
-			tag_t tag;
-			tag.value = pmt::from_long(d_items_in_buffer);
-			tag.offset = nitems_written(out_stream_index);
-			tag.key = pmt::intern("buffer_start");
-			tag.srcid = alias_pmt();
+	
+	if (!d_sample_index) {
+		tag_t tag;
+		tag.value = pmt::from_long(d_items_in_buffer);
+		tag.offset = nitems_written(out_stream_index);
+		tag.key = pmt::intern("buffer_start");
+		tag.srcid = alias_pmt();
 
-			add_item_tag(out_stream_index, tag);
-		}
-		short *out = (short *) output_items[out_stream_index];
-		for (sample_index = 0; sample_index < nb_samples; sample_index++) {
-			out[sample_index] = get_channel_value(d_raw_samples[sample_index], out_stream_index);
-		}
+		add_item_tag(out_stream_index, tag);
 	}
+	
+	short *out = (short *) output_items[0];
+	memcpy(out, d_raw_samples + d_sample_index, sizeof(short) * nb_samples);
+	
 	d_items_in_buffer -= nb_samples;
 	d_sample_index += nb_samples;
 
@@ -116,6 +138,11 @@ int digital_in_source_impl::work(int noutput_items,
 unsigned short digital_in_source_impl::get_channel_value(unsigned int channel, unsigned short sample)
 {
 	return (sample & (1u << channel )) >> channel;
+}
+
+void digital_in_source_impl::set_sync_with_analog(bool sync)
+{
+	block_communication::get_instance().request_sync_between_analog_digital(d_uri, true, d_buffer_size);
 }
 
 } /* namespace m2k */
