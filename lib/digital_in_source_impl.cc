@@ -89,16 +89,18 @@ int digital_in_source_impl::work(int noutput_items,
 
 //	attempt = 0;
 
+//	std::cerr << "d_items_in_buffer: " << d_items_in_buffer << std::endl;
 	if (!d_items_in_buffer) {
 		try {
 			if (block_communication::get_instance().is_sync_requested(d_uri)) {
 				if (block_communication::get_instance().can_capture(d_uri, block_communication::SYNC_DEVICE::DIGITAL)) {
 					d_raw_samples = d_digital->getSamplesP(d_buffer_size);
 					block_communication::get_instance().data_captured(d_uri, block_communication::SYNC_DEVICE::DIGITAL);
+					std::cerr << "Captured data LOGIC!" << std::endl;
 				} else {
 					/* Can't capture yet return 0 items produced,
 					 work will be called again */
-					std::cerr << "Waiting for analog to capture!";
+//					std::cerr << "Waiting for analog to capture!";
 					return 0;
 				}
 			} else {
@@ -110,6 +112,8 @@ int digital_in_source_impl::work(int noutput_items,
 		}
 		d_items_in_buffer = (unsigned long) d_buffer_size;
 		d_sample_index = 0;
+
+//		std::cerr << "d_items_in_buffer: " << d_items_in_buffer << std::endl;
 	}
 
 	unsigned long nb_samples = std::min(d_items_in_buffer, (unsigned long) noutput_items);

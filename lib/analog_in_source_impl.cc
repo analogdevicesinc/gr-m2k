@@ -169,7 +169,24 @@ int analog_in_source_impl::work(int noutput_items,
 {
     if (!d_items_in_buffer) {
         try {
-            d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
+//		std::cerr << "Wainting for is sync requested! ANALOG!" << std::endl;
+		if (block_communication::get_instance().is_sync_requested(d_uri)) {
+//			std::cerr << "GOT OUT OF IS SYNC REQUESTED!" << std::endl;
+			if (block_communication::get_instance().can_capture(d_uri, block_communication::SYNC_DEVICE::ANALOG)) {
+//					std::cerr << "Got out of get capture!" << std::endl;
+					d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
+					std::cerr << "Captured data ANALOG: " << d_buffer_size << std::endl;
+					block_communication::get_instance().data_captured(d_uri, block_communication::SYNC_DEVICE::ANALOG);
+			    } else {
+					/* Can't capture yet return 0 items produced,
+					 work will be called again */
+//					std::cerr << "Waiting for digital to capture!" << std::endl;
+					return 0;
+			    }
+		} else {
+			d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
+//			std::cerr << "Wrong capture" << std::endl;
+		}
         } catch (std::exception &e) {
             std::cout << e.what() << std::endl;
             return -1;

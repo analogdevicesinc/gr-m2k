@@ -17,14 +17,13 @@ void block_communication::request_sync_between_analog_digital(const std::string 
 
 	std::cerr << uri << " requested sync" << std::endl;
 
-	if ((d_sync_requested.find(uri) != d_sync_requested.end()) && d_sync_requested[uri] != sync) {
-		d_sync_requested[uri] = sync;
-		if (sync) {
-			d_sync_state[uri] = {true, true};
-			d_buffer_size = buffer_size;
-			libm2k::context::M2k *context = gr::m2k::analog_in_source_impl::get_context(uri);
-			context->startMixedSignalAcquisition(d_buffer_size);
-		}
+
+	d_sync_requested[uri] = sync;
+	if (sync) {
+		d_sync_state[uri] = {true, true};
+		d_buffer_size = buffer_size;
+		libm2k::context::M2k *context = gr::m2k::analog_in_source_impl::get_context(uri);
+		context->startMixedSignalAcquisition(d_buffer_size);
 	}
 }
 
