@@ -39,7 +39,7 @@ asserts:
 
 outputs:
   - domain: stream
-    dtype: short
+    dtype: float
     multiplicity: 1
 
 

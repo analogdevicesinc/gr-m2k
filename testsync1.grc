@@ -44,23 +44,6 @@ blocks:
     coordinate: [184, 12]
     rotation: 0
     state: enabled
-- name: blocks_short_to_float_0
-  id: blocks_short_to_float
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    scale: '1'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [533, 229]
-    rotation: 0
-    state: true
 - name: m2k_analog_in_source_0
   id: m2k_analog_in_source
   parameters:
@@ -210,15 +193,14 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [846, 374]
+    coordinate: [550, 383]
     rotation: 0
     state: true
 
 connections:
-- [blocks_short_to_float_0, '0', qtgui_time_sink_x_0, '0']
 - [m2k_analog_in_source_0, '0', qtgui_time_sink_x_0, '1']
 - [m2k_analog_in_source_0, '1', qtgui_time_sink_x_0, '2']
-- [m2k_digital_in_source_0, '0', blocks_short_to_float_0, '0']
+- [m2k_digital_in_source_0, '0', qtgui_time_sink_x_0, '0']
 
 metadata:
   file_format: 1

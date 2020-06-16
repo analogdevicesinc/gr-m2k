@@ -50,7 +50,7 @@ digital_in_source_impl::digital_in_source_impl(const std::string &uri,
 					       int kernel_buffers, bool sync)
 	: gr::sync_block("digital_in_source",
 			 gr::io_signature::make(0, 0, 0),
-			 gr::io_signature::make(1, 2, sizeof(unsigned short))),
+			 gr::io_signature::make(1, 2, sizeof(float))),
 	d_uri(uri),
 	d_buffer_size(buffer_size),
 	d_channel(channel)
@@ -132,8 +132,11 @@ int digital_in_source_impl::work(int noutput_items,
 		add_item_tag(out_stream_index, tag);
 	}
 	
-	short *out = (short *) output_items[0];
-	memcpy(out, d_raw_samples + d_sample_index, sizeof(short) * nb_samples);
+	float *out = (float *) output_items[0];
+//	memcpy(out, d_raw_samples + d_sample_index, sizeof(short) * nb_samples);
+	for (int i = 0; i < nb_samples; ++i) {
+		out[i] = get_channel_value(0, d_raw_samples[d_sample_index + i]);
+	}
 	
 	d_items_in_buffer -= nb_samples;
 	d_sample_index += nb_samples;
