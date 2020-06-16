@@ -58,12 +58,6 @@ target_include_directories(gnuradio-m2k
         PUBLIC $<INSTALL_INTERFACE:include>
         )
 
-set_target_properties(gnuradio-m2k PROPERTIES
-        VERSION ${GR_M2K_VERSION}
-        SOVERSION ${GR_M2K_VERSION_MAJOR}
-        DEFINE_SYMBOL "gnuradio_m2k_EXPORTS"
-        )
-
 if (APPLE)
     set_target_properties(gnuradio-m2k PROPERTIES
             INSTALL_NAME_DIR "${CMAKE_INSTALL_PREFIX}/lib"
@@ -75,3 +69,9 @@ endif (APPLE)
 ########################################################################
 include(GrMiscUtils)
 GR_LIBRARY_FOO(gnuradio-m2k)
+
+set_target_properties(gnuradio-m2k PROPERTIES
+	VERSION ${GR_M2K_VERSION}
+	SOVERSION ${GR_M2K_VERSION_MAJOR}
+	DEFINE_SYMBOL "gnuradio_m2k_EXPORTS"
+)
