@@ -21,7 +21,7 @@
 #ifndef INCLUDED_M2K_DIGITAL_IN_SOURCE_H
 #define INCLUDED_M2K_DIGITAL_IN_SOURCE_H
 
-#include <m2k/m2k/api.h>
+#include <m2k/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {
@@ -45,7 +45,8 @@ static sptr make(const std::string &uri,
 		 int buffer_size,
 		 const int channel,
 		 double sampling_frequency,
-		 int kernel_buffers);
+		 int kernel_buffers,
+		 bool sync = false);
 
 virtual void set_params(double sampling_frequency) = 0;
 

@@ -43,7 +43,8 @@ public:
 			       int buffer_size,
 			       const int channel,
 			       double sampling_frequency,
-			       int kernel_buffers);
+			       int kernel_buffers,
+			       bool sync);
 
 	~digital_in_source_impl();
 

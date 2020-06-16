@@ -37,17 +37,17 @@ digital_in_source::make(const std::string &uri,
 			int buffer_size,
 			const int channel,
 			double sampling_frequency,
-			int kernel_buffers)
+			int kernel_buffers, bool sync)
 {
 	return gnuradio::get_initial_sptr
-		(new digital_in_source_impl(uri, buffer_size, channel, sampling_frequency, kernel_buffers));
+		(new digital_in_source_impl(uri, buffer_size, channel, sampling_frequency, kernel_buffers, sync));
 }
 
 digital_in_source_impl::digital_in_source_impl(const std::string &uri,
 					       int buffer_size,
 					       const int channel,
 					       double sampling_frequency,
-					       int kernel_buffers)
+					       int kernel_buffers, bool sync)
 	: gr::sync_block("digital_in_source",
 			 gr::io_signature::make(0, 0, 0),
 			 gr::io_signature::make(1, 2, sizeof(unsigned short))),
@@ -63,6 +63,8 @@ digital_in_source_impl::digital_in_source_impl(const std::string &uri,
 
 	d_items_in_buffer = 0;
 	set_output_multiple(0x400);
+
+	set_sync_with_analog(sync);
 }
 
 digital_in_source_impl::~digital_in_source_impl()

@@ -21,7 +21,7 @@
 #ifndef INCLUDED_M2K_ANALOG_IN_SOURCE_H
 #define INCLUDED_M2K_ANALOG_IN_SOURCE_H
 
-#include <m2k/m2k/api.h>
+#include <m2k/api.h>
 #include <gnuradio/sync_block.h>
 
 namespace gr {

@@ -53,7 +53,7 @@ GR_SWIG_MAKE(m2k_swig m2k_swig.i)
 ########################################################################
 # Install the build swig module
 ########################################################################
-GR_SWIG_INSTALL(TARGETS m2k_swig DESTINATION ${GR_PYTHON_DIR}/m2k)
+GR_SWIG_INSTALL(TARGETS m2k_swig DESTINATION lib/python3.8/dist-packages/m2k)
 
 ########################################################################
 # Install swig .i files for development

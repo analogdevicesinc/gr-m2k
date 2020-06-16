@@ -27,6 +27,11 @@ parameters:
     label: Kernel buffers
     dtype: int
     default: 4
+    
+  - id: sync_with_analog
+    label: Analog sync
+    dtype: bool
+    default: True
 
 asserts:
   - ${kernel_buffers > 0 and kernel_buffers <= 64}
@@ -44,7 +49,8 @@ templates:
     ${buffer_size},
     ${channel},
     ${sampling_frequency},
-    ${kernel_buffers})
+    ${kernel_buffers},
+    ${sync_with_analog})
   callbacks:
     - set_params(${sampling_frequency})
 

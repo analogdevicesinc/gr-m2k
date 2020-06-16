@@ -31,7 +31,7 @@ endif ()
 GR_PYTHON_INSTALL(
         FILES
         __init__.py
-        DESTINATION ${GR_PYTHON_DIR}/m2k
+        DESTINATION lib/python3.8/dist-packages/m2k
         )
 
 ########################################################################
