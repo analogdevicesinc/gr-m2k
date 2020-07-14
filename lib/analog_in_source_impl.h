@@ -43,6 +43,8 @@ private:
     const short *d_raw_samples;
     bool d_stream_voltage_values;
 
+    boost::mutex d_buffer_mutex;
+
 public:
     analog_in_source_impl(const std::string &uri,
                           int buffer_size,
@@ -59,11 +61,29 @@ public:
                           int trigger_delay,
                           std::vector<double> trigger_level);
 
+    analog_in_source_impl(libm2k::context::M2k *ctx,
+				  int buffer_size,
+				  const std::vector<int> &channels,
+				  std::vector<int> ranges,
+				  double sampling_frequency,
+				  int oversampling_ratio,
+				  int kernel_buffers,
+				  bool calibrate_ADC,
+				  bool stream_voltage_values,
+				  std::vector<int> trigger_condition,
+				  std::vector<int> trigger_mode,
+				  int trigger_source,
+				  int trigger_delay,
+				  std::vector<double> trigger_level);
+
     ~analog_in_source_impl();
 
     int work(int noutput_items,
              gr_vector_const_void_star &input_items,
              gr_vector_void_star &output_items);
+
+    bool stop() override;
+    bool start() override;
 
     void set_params(std::vector<int> ranges,
                     double sampling_frequency,
@@ -74,6 +94,8 @@ public:
                      int trigger_source,
                      int trigger_delay,
                      std::vector<double> trigger_level);
+
+    void set_buffer_size(int buffer_size) override;
 
     static libm2k::context::M2k *get_context(const std::string &uri);
 

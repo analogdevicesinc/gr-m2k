@@ -97,7 +97,7 @@ int digital_in_source_impl::work(int noutput_items,
 			if (block_communication::get_instance().is_sync_requested(d_uri)) {
 				if (block_communication::get_instance().can_capture(d_uri, block_communication::SYNC_DEVICE::DIGITAL)) {
 					d_raw_samples = d_digital->getSamplesP(d_buffer_size);
-					block_communication::get_instance().data_captured(d_uri, block_communication::SYNC_DEVICE::DIGITAL);
+					block_communication::get_instance().data_captured(d_uri, block_communication::SYNC_DEVICE::DIGITAL, 32);
 					std::cerr << "Captured data LOGIC!" << std::endl;
 				} else {
 					/* Can't capture yet return 0 items produced,
