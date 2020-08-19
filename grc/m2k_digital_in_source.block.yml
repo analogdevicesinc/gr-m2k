@@ -1,0 +1,63 @@
+id: m2k_digital_in_source
+label: M2K Digital In Source
+flags: [ python ]
+
+parameters:
+  - id: uri
+    label: URI
+    dtype: string
+    default: 'ip:192.168.2.1'
+
+  - id: buffer_size
+    label: Buffer size
+    dtype: int
+    default: 0x8000
+
+  - id: channel
+    label: Channel
+    dtype: int
+    default: 0
+
+  - id: sampling_frequency
+    label: Sampling frequency
+    dtype: float
+    default: 100000
+
+  - id: kernel_buffers
+    label: Kernel buffers
+    dtype: int
+    default: 4
+
+  - id: streaming
+    label: Streaming
+    dtype: bool
+    default: True
+
+asserts:
+  - ${kernel_buffers > 0 and kernel_buffers <= 64}
+
+
+outputs:
+  - domain: stream
+    dtype: short
+    multiplicity: 1
+  - domain: message
+    id: msg
+    optional: true
+
+
+templates:
+  imports: import m2k
+  make: m2k.digital_in_source(${uri},
+    ${buffer_size},
+    ${channel},
+    ${sampling_frequency},
+    ${kernel_buffers},
+    ${streaming})
+  callbacks:
+    - set_params(${sampling_frequency}, ${streaming})
+
+documentation: |-
+  This block allows for streaming data from ADALM2000
+
+file_format: 1
