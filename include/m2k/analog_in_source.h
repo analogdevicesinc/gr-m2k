@@ -23,6 +23,7 @@
 
 #include <m2k/api.h>
 #include <gnuradio/sync_block.h>
+#include <libm2k/m2k.hpp>
 
 namespace gr {
 namespace m2k {
@@ -69,7 +70,26 @@ public:
                      std::vector<int> trigger_mode,
                      int trigger_source,
                      int trigger_delay,
-                     std::vector<double> trigger_level);
+                     std::vector<double> trigger_level,
+                     bool streaming,
+                     bool deinit = true);
+
+    static sptr make_from(libm2k::context::M2k *context,
+                         int buffer_size,
+                         const std::vector<int> &channels,
+                         std::vector<int> ranges,
+                         double sampling_frequency,
+                         int oversampling_ratio,
+                         int kernel_buffers,
+                         bool calibrate_ADC,
+                         bool stream_voltage_values,
+                         std::vector<int> trigger_condition,
+                         std::vector<int> trigger_mode,
+                         int trigger_source,
+                         int trigger_delay,
+                         std::vector<double> trigger_level,
+                         bool streaming,
+                         bool deinit = true);
 
     virtual void set_params(std::vector<int> ranges,
                             double sampling_frequency,
@@ -79,7 +99,12 @@ public:
                              std::vector<int> trigger_mode,
                              int trigger_source,
                              int trigger_delay,
-                             std::vector<double> trigger_level) = 0;
+                             std::vector<double> trigger_level,
+                             bool streaming) = 0;
+
+    virtual void set_timeout_ms(unsigned int timeout) = 0;
+
+    virtual void set_buffer_size(int buffer_size) = 0;
 
 };
 
