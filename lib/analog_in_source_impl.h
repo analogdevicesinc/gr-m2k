@@ -37,11 +37,16 @@ private:
     const std::string d_uri;
     std::vector<int> d_channels;
 
+    unsigned int d_timeout;
+    bool d_deinit;
+
     unsigned int d_buffer_size;
     unsigned int d_sample_index;
     unsigned long d_items_in_buffer;
     const short *d_raw_samples;
     bool d_stream_voltage_values;
+
+    pmt::pmt_t d_port_id;
 
 public:
     analog_in_source_impl(const std::string &uri,
@@ -57,7 +62,9 @@ public:
                           std::vector<int> trigger_mode,
                           int trigger_source,
                           int trigger_delay,
-                          std::vector<double> trigger_level);
+                          std::vector<double> trigger_level,
+                          bool streaming,
+                          bool deinit);
 
     ~analog_in_source_impl();
 
@@ -67,17 +74,24 @@ public:
 
     void set_params(std::vector<int> ranges,
                     double sampling_frequency,
-                    int oversampling_ratio);
+                    int oversampling_ratio) override;
 
     void set_trigger(std::vector<int> trigger_condition,
                      std::vector<int> trigger_mode,
                      int trigger_source,
                      int trigger_delay,
-                     std::vector<double> trigger_level);
+                     std::vector<double> trigger_level,
+                     bool streaming) override;
+
+    void set_timeout_ms(unsigned int timeout) override;
 
     static libm2k::context::M2k *get_context(const std::string &uri);
 
+    static void add_context(libm2k::context::M2k *context);
+
     static void remove_contexts(const std::string &uri);
+
+    void set_buffer_size(int buffer_size) override;
 };
 
 } // namespace m2k

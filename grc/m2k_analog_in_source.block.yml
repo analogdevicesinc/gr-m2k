@@ -105,6 +105,11 @@ parameters:
     dtype: float
     default: 1
 
+  - id: streaming
+    label: Streaming
+    dtype: bool
+    default: True
+
 
 asserts:
   - ${sampling_frequency in [1000, 10000, 100000, 1000000, 10000000, 100000000]}
@@ -115,6 +120,9 @@ outputs:
   - domain: stream
     dtype: ${ ('float' if type else 'short') }
     multiplicity: ${int(enable_ch1) + int(enable_ch2)}
+  - domain: message
+    id: msg
+    optional: true
 
 
 templates:
@@ -132,7 +140,8 @@ templates:
     [${trigger_mode_ch1}, ${trigger_mode_ch2}],
     ${trigger_source},
     ${trigger_delay},
-    [${trigger_level_ch1}, ${trigger_level_ch2}])
+    [${trigger_level_ch1}, ${trigger_level_ch2}],
+    ${streaming})
   callbacks:
     - set_params([${range_1}, ${range_2}],
       ${sampling_frequency},
@@ -142,7 +151,8 @@ templates:
       [${trigger_mode_ch1}, ${trigger_mode_ch2}],
       ${trigger_source},
       ${trigger_delay},
-      [${trigger_level_ch1}, ${trigger_level_ch2}])
+      [${trigger_level_ch1}, ${trigger_level_ch2}],
+      ${streaming})
 
 documentation: |-
   This block allows for streaming data from ADALM2000
