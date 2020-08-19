@@ -24,6 +24,8 @@
 #include "analog_in_source_impl.h"
 #include <gnuradio/io_signature.h>
 #include <libm2k/m2k.hpp>
+#include <libm2k/enums.hpp>
+#include <libm2k/m2kexceptions.hpp>
 #include <libm2k/contextbuilder.hpp>
 #include <libm2k/analog/m2kanalogin.hpp>
 #include <boost/lexical_cast.hpp>
@@ -226,20 +228,59 @@ void analog_in_source_impl::set_buffer_size(int buffer_size)
 	}
 }
 
+void analog_in_source_impl::refill_buffer()
+{
+    boost::unique_lock <boost::mutex> lock(d_mutex);
+
+    while (true) {
+        if (d_thread_stopped) {
+            break;
+        }
+        d_cond_wait.wait(lock, [&] { return d_empty_buffer; });
+
+        try {
+            lock.unlock();
+            d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
+            lock.lock();
+        } catch (libm2k::m2k_exception &e) {
+            if (e.iioCode() != -EBADF) {
+                std::cout << e.what() << std::endl;
+            }
+            d_thread_stopped = true;
+            break;
+        }
+        d_items_in_buffer = (unsigned long) d_buffer_size;
+        d_sample_index = 0;
+        d_empty_buffer = false;
+        d_cond_wait.notify_one();
+    }
+}
 
 int analog_in_source_impl::work(int noutput_items,
                                 gr_vector_const_void_star &input_items,
                                 gr_vector_void_star &output_items)
 {
+    boost::unique_lock <boost::mutex> lock(d_mutex);
+    if (d_thread_stopped) {
+        return -1;
+    }
     if (!d_items_in_buffer) {
-        try {
-            d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
-        } catch (std::exception &e) {
-            std::cout << e.what() << std::endl;
+        d_empty_buffer = true;
+        d_cond_wait.notify_one();
+    }
+
+    while (d_empty_buffer) {
+        // use wait_for to avoid permanent blocking in the work function
+        bool buffer_refilled = d_cond_wait.wait_for(lock, boost::chrono::milliseconds(d_timeout),
+                                                    [&] { return !d_empty_buffer; });
+        if (d_thread_stopped) {
             return -1;
         }
-        d_items_in_buffer = (unsigned long) d_buffer_size;
-        d_sample_index = 0;
+
+        if (!buffer_refilled) {
+            message_port_pub(d_port_id, pmt::mp("timeout"));
+            return 0;
+        }
     }
 
     unsigned long nb_samples = std::min(d_items_in_buffer, (unsigned long) noutput_items);
@@ -274,10 +315,36 @@ int analog_in_source_impl::work(int noutput_items,
             }
         }
     }
+
     d_items_in_buffer -= nb_samples;
     d_sample_index += nb_samples;
 
     return (int) nb_samples;
+}
+
+bool analog_in_source_impl::start()
+{
+    boost::unique_lock <boost::mutex> lock(d_mutex);
+
+    d_items_in_buffer = 0;
+    d_empty_buffer = true;
+    d_thread_stopped = false;
+    d_refill_thread = gr::thread::thread(boost::bind(&analog_in_source_impl::refill_buffer, this));
+
+    return true;
+}
+
+bool analog_in_source_impl::stop()
+{
+    d_analog_in->cancelAcquisition();
+    boost::unique_lock <boost::mutex> lock(d_mutex);
+    d_empty_buffer = true;
+    d_thread_stopped = true;
+    d_cond_wait.notify_one();
+    lock.unlock();
+    d_refill_thread.join();
+    d_analog_in->stopAcquisition();
+    return true;
 }
 
 } /* namespace m2k */

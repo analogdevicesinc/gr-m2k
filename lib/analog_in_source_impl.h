@@ -48,8 +48,13 @@ private:
 
     pmt::pmt_t d_port_id;
 
+    gr::thread::mutex d_mutex;
+    gr::thread::condition_variable d_cond_wait;
+    gr::thread::thread d_refill_thread;
+    volatile bool d_empty_buffer{}, d_thread_stopped{};
+
 public:
-    analog_in_source_impl(const std::string &uri,
+    analog_in_source_impl(libm2k::context::M2k *context,
                           int buffer_size,
                           const std::vector<int> &channels,
                           std::vector<int> ranges,
@@ -66,11 +71,16 @@ public:
                           bool streaming,
                           bool deinit);
 
-    ~analog_in_source_impl();
+    ~analog_in_source_impl() override;
+
+    void refill_buffer();
 
     int work(int noutput_items,
              gr_vector_const_void_star &input_items,
-             gr_vector_void_star &output_items);
+             gr_vector_void_star &output_items) override;
+
+    bool start() override;
+    bool stop() override;
 
     void set_params(std::vector<int> ranges,
                     double sampling_frequency,
