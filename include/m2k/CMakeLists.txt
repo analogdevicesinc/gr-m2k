@@ -29,5 +29,5 @@ endif()
 
 install(FILES
         ${headers}
-        DESTINATION ${GR_INCLUDE_DIR}/m2k
+        DESTINATION ${GR_INCLUDE_DIR}
         )
