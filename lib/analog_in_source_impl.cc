@@ -329,6 +329,13 @@ bool analog_in_source_impl::start()
     d_items_in_buffer = 0;
     d_empty_buffer = true;
     d_thread_stopped = false;
+
+    try {
+	    d_analog_in->startAcquisition(d_buffer_size);
+    } catch (const libm2k::m2k_exception &e) {
+	    return false;
+    }
+
     d_refill_thread = gr::thread::thread(boost::bind(&analog_in_source_impl::refill_buffer, this));
 
     return true;
