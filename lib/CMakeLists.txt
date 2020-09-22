@@ -47,12 +47,15 @@ if (NOT m2k_sources)
     return()
 endif (NOT m2k_sources)
 
+find_package(Boost COMPONENTS chrono REQUIRED)
+
 add_library(gnuradio-m2k SHARED ${m2k_sources})
 target_link_libraries(gnuradio-m2k
         gnuradio::gnuradio-runtime
         gnuradio::gnuradio-blocks
         ${IIO_LIBRARIES}
-        ${M2K_LIBRARIES})
+        ${M2K_LIBRARIES}
+        Boost::chrono)
 
 target_include_directories(gnuradio-m2k
         PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
