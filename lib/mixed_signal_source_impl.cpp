@@ -47,6 +47,7 @@ bool mixed_signal_source_impl::start()
 	d_items_in_buffer = 0;
 	d_please_refill_buffer = false;
 	d_thread_stopped = false;
+	d_current_captured_buffer = 0;
 
 	// TODO: take into account buffer_size and max memory on the m2k
 	// and compute a number of kernel buffers, or let others set it (scopy)
@@ -169,6 +170,7 @@ void mixed_signal_source_impl::restart()
 	if (d_refill_thd.joinable()) {
 		d_m2k_context->stopMixedSignalAcquisition();
 		d_m2k_context->startMixedSignalAcquisition(d_buffer_size);
+		d_current_captured_buffer = 0;
 	}
 }
 
