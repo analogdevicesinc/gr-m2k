@@ -53,8 +53,7 @@ add_library(gnuradio-m2k SHARED ${m2k_sources})
 target_link_libraries(gnuradio-m2k
         gnuradio::gnuradio-runtime
         gnuradio::gnuradio-blocks
-        ${IIO_LIBRARIES}
-        ${M2K_LIBRARIES}
+        libm2k::libm2k
         Boost::chrono)
 
 target_include_directories(gnuradio-m2k
