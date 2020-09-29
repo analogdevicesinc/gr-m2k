@@ -166,8 +166,10 @@ void mixed_signal_source_impl::set_buffer_size(int buffer_size)
 
 void mixed_signal_source_impl::restart()
 {
-	d_m2k_context->stopMixedSignalAcquisition();
-	d_m2k_context->startMixedSignalAcquisition(d_buffer_size);
+	if (d_refill_thd.joinable()) {
+		d_m2k_context->stopMixedSignalAcquisition();
+		d_m2k_context->startMixedSignalAcquisition(d_buffer_size);
+	}
 }
 
 void mixed_signal_source_impl::refill_buffer()
