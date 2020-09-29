@@ -124,12 +124,7 @@ if(WIN32)
   find_package(Gnuradio PATHS "c:/Program Files/gnuradio/lib/cmake/gnuradio" REQUIRED)
 endif()
 
-find_library(IIO_LIBRARIES iio)
-find_path(IIO_INCLUDE_DIRS iio.h)
-
-find_library(M2K_LIBRARIES m2k)
-find_path(M2K_INCLUDE_DIRS m2k.hpp)
-#pkg_check_modules(LIBM2K REQUIRED libm2k)
+find_package(libm2k REQUIRED)
 
 ########################################################################
 # On Apple only, set install name and use rpath correctly, if not already set
