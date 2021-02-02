@@ -1,6 +1,6 @@
 id: m2k_digital_in_source
 label: M2K Digital In Source
-flags: [ python ]
+flags: [ python, throttle ]
 
 parameters:
   - id: uri
