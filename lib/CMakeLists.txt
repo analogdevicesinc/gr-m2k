@@ -31,7 +31,8 @@ list(APPEND m2k_sources
         analog_out_converter_impl.cc
         analog_out_sink_impl.cc
         digital_in_source_impl.cc
-	mixed_signal_source_impl.cpp
+        digital_out_sink_impl.cc
+        mixed_signal_source_impl.cpp
     )
 
 if (DIGITAL)
