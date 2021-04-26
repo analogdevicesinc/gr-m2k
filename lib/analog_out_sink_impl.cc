@@ -106,13 +106,20 @@ int analog_out_sink_impl::work(int noutput_items,
                                gr_vector_void_star &output_items)
 {
     std::vector <std::vector<short>> samples;
+    static int count[2]={0,0};
 
     for (unsigned int i = 0; i < input_items.size(); i++) {
+	if(count[i] < d_buffer_size ) {
         samples.push_back(std::vector<short>());
         if (d_stream_voltage_values) {
             float *temp_samples = (float *) input_items[i];
             for (int j = 0; j < noutput_items; j++) {
+		    if(samples[i].size()==d_buffer_size){
+    				d_analog_out->pushRaw(samples);
+			    break;
+		    }
                 samples[i].push_back(d_analog_out->convertVoltsToRaw(0, temp_samples[j]));
+		count[i]++;
             }
         } else {
             short *temp_samples = (short *) input_items[i];
@@ -120,9 +127,10 @@ int analog_out_sink_impl::work(int noutput_items,
                 samples[i].push_back(temp_samples[j]);
             }
         }
+	}
     }
 
-    d_analog_out->pushRaw(samples);
+
 
     consume_each(d_buffer_size);
     return 0;
