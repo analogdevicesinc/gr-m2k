@@ -111,12 +111,12 @@ int analog_out_sink_impl::work(int noutput_items,
         samples.push_back(std::vector<short>());
         if (d_stream_voltage_values) {
             float *temp_samples = (float *) input_items[i];
-            for (int j = 0; j < noutput_items; j++) {
+            for (int j = 0; j < d_buffer_size; j++) {
                 samples[i].push_back(d_analog_out->convertVoltsToRaw(0, temp_samples[j]));
             }
         } else {
             short *temp_samples = (short *) input_items[i];
-            for (int j = 0; j < noutput_items; j++) {
+            for (int j = 0; j < d_buffer_size; j++) {
                 samples[i].push_back(temp_samples[j]);
             }
         }
