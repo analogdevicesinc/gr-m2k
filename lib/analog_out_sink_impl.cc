@@ -64,6 +64,9 @@ analog_out_sink_impl::analog_out_sink_impl(const std::string &uri,
     libm2k::context::M2k *context = analog_in_source_impl::get_context(uri);
     d_analog_out = context->getAnalogOut();
 
+    d_cyclic_buffer = std::vector<bool>(2);
+    d_first_iteration = true;
+
     d_analog_out->stop();
     if (calibrate_DAC) {
         context->calibrateDAC();
@@ -72,6 +75,7 @@ analog_out_sink_impl::analog_out_sink_impl(const std::string &uri,
     for (int i = 0; i < kernel_buffers.size(); ++i) {
         d_analog_out->setKernelBuffersCount(i, kernel_buffers[i]);
         d_analog_out->setCyclic(i, cyclic[i]);
+        d_cyclic_buffer.at(i) = cyclic[i];
         d_analog_out->enableChannel(i, true);
     }
 
@@ -122,7 +126,19 @@ int analog_out_sink_impl::work(int noutput_items,
         }
     }
 
-    d_analog_out->pushRaw(samples);
+    for (unsigned int i = 0; i < input_items.size(); i++) {
+        if (d_cyclic_buffer.at(i)) {
+            if (d_first_iteration) {
+                d_analog_out->pushRaw(i, samples.at(i));
+            }
+        } else {
+            d_analog_out->pushRaw(i, samples.at(i));
+        }
+    }
+
+    if ((d_cyclic_buffer.at(0) || d_cyclic_buffer.at(1)) && d_first_iteration) {
+        d_first_iteration = false;
+    }
 
     consume_each(d_buffer_size);
     return 0;

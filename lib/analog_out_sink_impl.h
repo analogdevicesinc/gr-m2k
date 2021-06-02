@@ -33,6 +33,8 @@ private:
     const std::string d_uri;
     const int d_buffer_size;
     bool d_stream_voltage_values;
+    std::vector<bool> d_cyclic_buffer;
+    bool d_first_iteration;
 
 public:
     analog_out_sink_impl(const std::string &uri,
