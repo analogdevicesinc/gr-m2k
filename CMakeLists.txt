@@ -187,13 +187,18 @@ install(
 ########################################################################
 add_subdirectory(include/m2k)
 add_subdirectory(lib)
-add_subdirectory(swig)
-add_subdirectory(python)
 
-# if GNURadio Companion not found, do not add grc blocks
-if (GRC_BLOCKS_DIR)
-	add_subdirectory(grc)
-endif (GRC_BLOCKS_DIR)
+option(WITH_PYTHON "Build python/grc bindings" ON)
+if(WITH_PYTHON)
+	add_subdirectory(swig)
+	add_subdirectory(python)
+
+	# if GNURadio Companion not found, do not add grc blocks
+	if (GRC_BLOCKS_DIR)
+		add_subdirectory(grc)
+	endif (GRC_BLOCKS_DIR)
+
+endif(WITH_PYTHON)
 
 ########################################################################
 # Install cmake search helper for this library
