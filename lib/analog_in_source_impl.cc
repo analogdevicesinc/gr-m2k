@@ -30,7 +30,6 @@
 #include <libm2k/analog/m2kanalogin.hpp>
 #include <boost/lexical_cast.hpp>
 
-
 namespace gr {
 namespace m2k {
 
@@ -50,14 +49,16 @@ analog_in_source::make(const std::string &uri,
 					   int trigger_delay,
 					   std::vector<double> trigger_level,
 					   bool streaming,
-					   bool deinit)
+					   bool deinit,
+					   double data_rate
+					   )
 {
 	return gnuradio::get_initial_sptr
 			(new analog_in_source_impl(analog_in_source_impl::get_context(uri),buffer_size, channels, ranges, sampling_frequency, oversampling_ratio,
 									   kernel_buffers,
 									   calibrate_ADC, stream_voltage_values, trigger_condition, trigger_mode,
 									   trigger_source,
-									   trigger_delay, trigger_level, streaming, deinit));
+									   trigger_delay, trigger_level, streaming, deinit, data_rate));
 }
 
 analog_in_source::sptr
@@ -76,14 +77,15 @@ analog_in_source::make_from(libm2k::context::M2k *context,
 							int trigger_delay,
 							std::vector<double> trigger_level,
 							bool streaming,
-							bool deinit)
+							bool deinit,
+							double data_rate)
 {
 	return gnuradio::get_initial_sptr
 			(new analog_in_source_impl(context, buffer_size, channels, ranges, sampling_frequency, oversampling_ratio,
 									   kernel_buffers,
 									   calibrate_ADC, stream_voltage_values, trigger_condition, trigger_mode,
 									   trigger_source,
-									   trigger_delay, trigger_level, streaming, deinit));
+									   trigger_delay, trigger_level, streaming, deinit, data_rate));
 }
 
 analog_in_source_impl::analog_in_source_impl(libm2k::context::M2k *context,
@@ -101,17 +103,20 @@ analog_in_source_impl::analog_in_source_impl(libm2k::context::M2k *context,
 											 int trigger_delay,
 											 std::vector<double> trigger_level,
 											 bool streaming,
-											 bool deinit)
+											 bool deinit,
+											 double data_rate)
 	: gr::sync_block("analog_in_source",
 					 gr::io_signature::make(0, 0, 0),
 					 gr::io_signature::make(1, 2, sizeof(float))),
-	  d_uri(context->getUri()),
-	  d_buffer_size(buffer_size),
-	  d_channels(channels),
-	  d_stream_voltage_values(stream_voltage_values),
-	  d_timeout(100),
-	  d_deinit(deinit),
-	  d_port_id(pmt::mp("msg"))
+	d_uri(context->getUri()),
+	d_buffer_size(buffer_size),
+	d_channels(channels),
+	d_stream_voltage_values(stream_voltage_values),
+	d_timeout(100),
+	d_deinit(deinit),
+	d_port_id(pmt::mp("msg")),
+	d_data_rate(data_rate)
+
 {
 	add_context(context);
 	d_analog_in = context->getAnalogIn();
@@ -228,6 +233,10 @@ void analog_in_source_impl::set_buffer_size(int buffer_size)
 	}
 }
 
+void analog_in_source_impl::set_data_rate(double rate) {
+	d_data_rate = rate;
+}
+
 void analog_in_source_impl::refill_buffer()
 {
 	boost::unique_lock <boost::mutex> lock(d_mutex);
@@ -240,7 +249,20 @@ void analog_in_source_impl::refill_buffer()
 
 		try {
 			lock.unlock();
+			boost::chrono::high_resolution_clock::time_point t1 ;
+			if(d_data_rate) {
+				t1 = boost::chrono::high_resolution_clock::now();
+			}
+
 			d_raw_samples = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
+
+			if(d_data_rate) {
+				boost::chrono::duration<double> sec = boost::chrono::high_resolution_clock::now() - t1; // compute getSamplesDuration
+				unsigned int frameTime = 1000000.0/d_data_rate;
+				unsigned int acquisitionTime = (1000000.0)* sec.count();
+				unsigned int diff = (frameTime > acquisitionTime) ? frameTime - acquisitionTime: 0;
+				boost::this_thread::sleep_for(boost::chrono::microseconds(diff)); // wait remainder
+			}
 			lock.lock();
 		} catch (libm2k::m2k_exception &e) {
 			if (e.iioCode() != -EBADF) {

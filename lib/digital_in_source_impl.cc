@@ -39,10 +39,11 @@ digital_in_source::make(const std::string &uri,
 						double sampling_frequency,
 						int kernel_buffers,
 						bool streaming,
-						bool deinit)
+						bool deinit,
+						double data_rate)
 {
 	return gnuradio::get_initial_sptr
-			(new digital_in_source_impl(analog_in_source_impl::get_context(uri), buffer_size, channel, sampling_frequency, kernel_buffers, streaming, deinit));
+			(new digital_in_source_impl(analog_in_source_impl::get_context(uri), buffer_size, channel, sampling_frequency, kernel_buffers, streaming, deinit, data_rate));
 }
 
 digital_in_source::sptr
@@ -52,10 +53,11 @@ digital_in_source::make_from(libm2k::context::M2k *context,
 							 double sampling_frequency,
 							 int kernel_buffers,
 							 bool streaming,
-							 bool deinit)
+							 bool deinit,
+							 double data_rate)
 {
 	return gnuradio::get_initial_sptr
-			(new digital_in_source_impl(context, buffer_size, channel, sampling_frequency, kernel_buffers, streaming, deinit));
+			(new digital_in_source_impl(context, buffer_size, channel, sampling_frequency, kernel_buffers, streaming, deinit, data_rate));
 }
 
 digital_in_source_impl::digital_in_source_impl(libm2k::context::M2k *context,
@@ -64,7 +66,8 @@ digital_in_source_impl::digital_in_source_impl(libm2k::context::M2k *context,
 											   double sampling_frequency,
 											   int kernel_buffers,
 											   bool streaming,
-											   bool deinit)
+											   bool deinit,
+											   double data_rate)
 	: gr::sync_block("digital_in_source",
 					 gr::io_signature::make(0, 0, 0),
 					 gr::io_signature::make(1, 1, sizeof(uint16_t))),
@@ -73,7 +76,8 @@ digital_in_source_impl::digital_in_source_impl(libm2k::context::M2k *context,
 	  d_channel(channel),
 	  d_timeout(100),
 	  d_deinit(deinit),
-	  d_port_id(pmt::mp("msg"))
+	  d_port_id(pmt::mp("msg")),
+	  d_data_rate(data_rate)
 {
 	analog_in_source_impl::add_context(context);
 	d_digital = context->getDigital();
@@ -112,7 +116,20 @@ void digital_in_source_impl::refill_buffer()
 
 		try {
 			lock.unlock();
+			boost::chrono::high_resolution_clock::time_point t1 ;
+			if(d_data_rate) {
+				t1 = boost::chrono::high_resolution_clock::now();
+			}
+
 			d_raw_samples = d_digital->getSamplesP(d_buffer_size);
+
+			if(d_data_rate) {
+				boost::chrono::duration<double> sec = boost::chrono::high_resolution_clock::now() - t1; // compute getSamplesDuration
+				unsigned int frameTime = 1000000.0/d_data_rate;
+				unsigned int acquisitionTime = (1000000.0)* sec.count();
+				unsigned int diff = (frameTime > acquisitionTime) ? frameTime - acquisitionTime: 0;
+				boost::this_thread::sleep_for(boost::chrono::microseconds(diff)); // wait remainder
+			}
 			lock.lock();
 		} catch (libm2k::m2k_exception &e) {
 			if (e.iioCode() != -EBADF) {
@@ -181,6 +198,10 @@ void digital_in_source_impl::set_timeout_ms(unsigned int timeout)
 		boost::unique_lock<boost::mutex> lock(d_mutex);
 		d_timeout = timeout;
 	}
+}
+
+void digital_in_source_impl::set_data_rate(double rate) {
+	d_data_rate = rate;
 }
 
 void digital_in_source_impl::set_buffer_size(int buffer_size)
