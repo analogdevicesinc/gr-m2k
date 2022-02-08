@@ -37,16 +37,16 @@ namespace m2k {
  */
 class M2K_API analog_in_converter : virtual public gr::sync_block {
 public:
-    typedef boost::shared_ptr <analog_in_converter> sptr;
+	typedef boost::shared_ptr <analog_in_converter> sptr;
 
-    /*!
-     * \brief Return a shared_ptr to a new instance of m2k::analog_in_converter.
-     *
-     * \param uri String of the context uri
-     */
-    static sptr make(const std::string &uri);
+	/*!
+	 * \brief Return a shared_ptr to a new instance of m2k::analog_in_converter.
+	 *
+	 * \param uri String of the context uri
+	 */
+	static sptr make(const std::string &uri);
 
-    static sptr make_from(libm2k::context::M2k *context);
+	static sptr make_from(libm2k::context::M2k *context);
 
 };
 
