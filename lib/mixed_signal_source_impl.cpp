@@ -14,8 +14,8 @@ mixed_signal_source::make_from(libm2k::context::M2k *context, int buffer_size)
 
 mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size)
 	: gr::sync_block("mixed_device_source"
-			 , gr::io_signature::make(0, 0, 0)
-			 , gr::io_signature::make3(3, -1, sizeof(short), sizeof(short), sizeof(unsigned short)))
+	, gr::io_signature::make(0, 0, 0)
+	, gr::io_signature::make3(3, -1, sizeof(short), sizeof(short), sizeof(unsigned short)))
 	, d_m2k_context(context)
 	, d_analog_in(context->getAnalogIn())
 	, d_digital_in(context->getDigital())
@@ -87,8 +87,8 @@ bool mixed_signal_source_impl::stop()
 }
 
 int mixed_signal_source_impl::work(int noutput_items,
-				   gr_vector_const_void_star &input_items,
-				   gr_vector_void_star &output_items)
+								   gr_vector_const_void_star &input_items,
+								   gr_vector_void_star &output_items)
 {
 	boost::unique_lock<boost::mutex> lock(d_m2k_mutex);
 
@@ -103,7 +103,7 @@ int mixed_signal_source_impl::work(int noutput_items,
 
 	while (d_please_refill_buffer) {
 		const bool fast_enough = d_m2k_cond2.timed_wait(lock,
-								boost::posix_time::milliseconds(d_timeout));
+														boost::posix_time::milliseconds(d_timeout));
 
 		if (d_thread_stopped) {
 			return -1;

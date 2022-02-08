@@ -37,74 +37,74 @@ namespace m2k {
  */
 class M2K_API analog_in_source : virtual public gr::sync_block {
 public:
-    typedef boost::shared_ptr <analog_in_source> sptr;
+	typedef boost::shared_ptr <analog_in_source> sptr;
 
-    /*!
-     * \brief Return a shared_ptr to a new instance of m2k::analog_in_source.
-     *
-     * \param uri String of the context uri
-     * \param buffer_size Integer number of samples to be put into each buffered
-     * \param channels List of channel's states (enable/disable)
-     * \param ranges List of ranges for the given channels
-     * \param sampling_frequency Frequency at which the hardware will input samples
-     * \param oversampling_ratio Integer number representing the oversampling factor
-     * \param kernel_buffers The number of the internal buffers
-     * \param calibrate_ADC Boolean value for deciding if the ADC should be calibrated
-     * \param stream_voltage_values Boolean value for setting the output type: voltage/raw
-     * \param trigger_condition List of triggering conditions for the given channels
-     * \param trigger_mode List of triggering modes for the given channels
-     * \param trigger_source The source for the triggering event
-     * \param trigger_delay The number of samples in buffer before the triggered sample
-     * \param trigger_level List of triggering levels for the given channels
-     */
-    static sptr make(const std::string &uri,
-                     int buffer_size,
-                     const std::vector<int> &channels,
-                     std::vector<int> ranges,
-                     double sampling_frequency,
-                     int oversampling_ratio,
-                     int kernel_buffers,
-                     bool calibrate_ADC,
-                     bool stream_voltage_values,
-                     std::vector<int> trigger_condition,
-                     std::vector<int> trigger_mode,
-                     int trigger_source,
-                     int trigger_delay,
-                     std::vector<double> trigger_level,
-                     bool streaming,
-                     bool deinit = true);
+	/*!
+	 * \brief Return a shared_ptr to a new instance of m2k::analog_in_source.
+	 *
+	 * \param uri String of the context uri
+	 * \param buffer_size Integer number of samples to be put into each buffered
+	 * \param channels List of channel's states (enable/disable)
+	 * \param ranges List of ranges for the given channels
+	 * \param sampling_frequency Frequency at which the hardware will input samples
+	 * \param oversampling_ratio Integer number representing the oversampling factor
+	 * \param kernel_buffers The number of the internal buffers
+	 * \param calibrate_ADC Boolean value for deciding if the ADC should be calibrated
+	 * \param stream_voltage_values Boolean value for setting the output type: voltage/raw
+	 * \param trigger_condition List of triggering conditions for the given channels
+	 * \param trigger_mode List of triggering modes for the given channels
+	 * \param trigger_source The source for the triggering event
+	 * \param trigger_delay The number of samples in buffer before the triggered sample
+	 * \param trigger_level List of triggering levels for the given channels
+	 */
+	static sptr make(const std::string &uri,
+					 int buffer_size,
+					 const std::vector<int> &channels,
+					 std::vector<int> ranges,
+					 double sampling_frequency,
+					 int oversampling_ratio,
+					 int kernel_buffers,
+					 bool calibrate_ADC,
+					 bool stream_voltage_values,
+					 std::vector<int> trigger_condition,
+					 std::vector<int> trigger_mode,
+					 int trigger_source,
+					 int trigger_delay,
+					 std::vector<double> trigger_level,
+					 bool streaming,
+					 bool deinit = true);
 
-    static sptr make_from(libm2k::context::M2k *context,
-                         int buffer_size,
-                         const std::vector<int> &channels,
-                         std::vector<int> ranges,
-                         double sampling_frequency,
-                         int oversampling_ratio,
-                         int kernel_buffers,
-                         bool calibrate_ADC,
-                         bool stream_voltage_values,
-                         std::vector<int> trigger_condition,
-                         std::vector<int> trigger_mode,
-                         int trigger_source,
-                         int trigger_delay,
-                         std::vector<double> trigger_level,
-                         bool streaming,
-                         bool deinit = true);
+	static sptr make_from(libm2k::context::M2k *context,
+						  int buffer_size,
+						  const std::vector<int> &channels,
+						  std::vector<int> ranges,
+						  double sampling_frequency,
+						  int oversampling_ratio,
+						  int kernel_buffers,
+						  bool calibrate_ADC,
+						  bool stream_voltage_values,
+						  std::vector<int> trigger_condition,
+						  std::vector<int> trigger_mode,
+						  int trigger_source,
+						  int trigger_delay,
+						  std::vector<double> trigger_level,
+						  bool streaming,
+						  bool deinit = true);
 
-    virtual void set_params(std::vector<int> ranges,
-                            double sampling_frequency,
-                            int oversampling_ratio) = 0;
+	virtual void set_params(std::vector<int> ranges,
+							double sampling_frequency,
+							int oversampling_ratio) = 0;
 
-    virtual void set_trigger(std::vector<int> trigger_condition,
-                             std::vector<int> trigger_mode,
-                             int trigger_source,
-                             int trigger_delay,
-                             std::vector<double> trigger_level,
-                             bool streaming) = 0;
+	virtual void set_trigger(std::vector<int> trigger_condition,
+							 std::vector<int> trigger_mode,
+							 int trigger_source,
+							 int trigger_delay,
+							 std::vector<double> trigger_level,
+							 bool streaming) = 0;
 
-    virtual void set_timeout_ms(unsigned int timeout) = 0;
+	virtual void set_timeout_ms(unsigned int timeout) = 0;
 
-    virtual void set_buffer_size(int buffer_size) = 0;
+	virtual void set_buffer_size(int buffer_size) = 0;
 
 };
 

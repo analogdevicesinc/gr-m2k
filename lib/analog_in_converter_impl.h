@@ -29,16 +29,16 @@ namespace m2k {
 
 class analog_in_converter_impl : public analog_in_converter {
 private:
-    libm2k::analog::M2kAnalogIn *d_analog_in;
+	libm2k::analog::M2kAnalogIn *d_analog_in;
 
 public:
-    analog_in_converter_impl(libm2k::context::M2k *context);
+	analog_in_converter_impl(libm2k::context::M2k *context);
 
-    ~analog_in_converter_impl();
+	~analog_in_converter_impl();
 
-    int work(int noutput_items,
-             gr_vector_const_void_star &input_items,
-             gr_vector_void_star &output_items);
+	int work(int noutput_items,
+			 gr_vector_const_void_star &input_items,
+			 gr_vector_void_star &output_items);
 };
 
 } // namespace m2k

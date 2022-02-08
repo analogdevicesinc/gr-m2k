@@ -21,8 +21,8 @@ public: // gr block api
 	bool stop() override;
 
 	int work(int noutput_items,
-	         gr_vector_const_void_star &input_items,
-	         gr_vector_void_star &output_items) override;
+			 gr_vector_const_void_star &input_items,
+			 gr_vector_void_star &output_items) override;
 
 public: // mixed_signal_source api
 	void set_timeout_ms(unsigned int timeout) override;
