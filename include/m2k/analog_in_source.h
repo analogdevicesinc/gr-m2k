@@ -55,7 +55,9 @@ public:
 	 * \param trigger_mode List of triggering modes for the given channels
 	 * \param trigger_source The source for the triggering event
 	 * \param trigger_delay The number of samples in buffer before the triggered sample
-	 * \param trigger_level List of triggering levels for the given channels
+	 * \param streaming configures m2k in streaming mode
+	 * \param deinit clears m2k resources on deinit - useful when used in conjunction with other software that handles deinit
+	 * \param data_rate sets a data rate of data_rate buffers per second
 	 */
 	static sptr make(const std::string &uri,
 					 int buffer_size,
@@ -72,7 +74,8 @@ public:
 					 int trigger_delay,
 					 std::vector<double> trigger_level,
 					 bool streaming,
-					 bool deinit = true);
+					 bool deinit = true,
+					 double data_rate = 0);
 
 	static sptr make_from(libm2k::context::M2k *context,
 						  int buffer_size,
@@ -89,11 +92,14 @@ public:
 						  int trigger_delay,
 						  std::vector<double> trigger_level,
 						  bool streaming,
-						  bool deinit = true);
+						  bool deinit = true,
+						  double data_rate = 0);
 
 	virtual void set_params(std::vector<int> ranges,
 							double sampling_frequency,
 							int oversampling_ratio) = 0;
+
+	virtual void set_data_rate(double rate) = 0;
 
 	virtual void set_trigger(std::vector<int> trigger_condition,
 							 std::vector<int> trigger_mode,

@@ -48,7 +48,8 @@ public:
 					 double sampling_frequency,
 					 int kernel_buffers,
 					 bool streaming,
-					 bool deinit = true);
+					 bool deinit = true,
+					 double data_rate = 0);
 
 	static sptr make_from(libm2k::context::M2k *context,
 						  int buffer_size,
@@ -56,11 +57,14 @@ public:
 						  double sampling_frequency,
 						  int kernel_buffers,
 						  bool streaming,
-						  bool deinit = true);
+						  bool deinit = true,
+						  double data_rate = 0);
 
 	virtual void set_params(double sampling_frequency, bool streaming) = 0;
 
-	virtual  void set_timeout_ms(unsigned int timeout) = 0;
+	virtual void set_data_rate(double rate) = 0;
+
+	virtual void set_timeout_ms(unsigned int timeout) = 0;
 
 	virtual void set_buffer_size(int buffer_size) = 0;
 

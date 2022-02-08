@@ -45,6 +45,7 @@ private:
 	unsigned long d_items_in_buffer;
 	const short *d_raw_samples;
 	bool d_stream_voltage_values;
+	double d_data_rate;
 
 	pmt::pmt_t d_port_id;
 
@@ -69,7 +70,8 @@ public:
 						  int trigger_delay,
 						  std::vector<double> trigger_level,
 						  bool streaming,
-						  bool deinit);
+						  bool deinit,
+						  double data_rate);
 
 	~analog_in_source_impl() override;
 
@@ -94,6 +96,8 @@ public:
 					 bool streaming) override;
 
 	void set_timeout_ms(unsigned int timeout) override;
+
+	void set_data_rate(double rate) override;
 
 	static libm2k::context::M2k *get_context(const std::string &uri);
 

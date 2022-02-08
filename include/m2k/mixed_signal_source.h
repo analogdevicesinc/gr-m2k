@@ -17,9 +17,10 @@ class M2K_API mixed_signal_source : virtual public gr::sync_block {
 public:
 	typedef boost::shared_ptr <mixed_signal_source> sptr;
 
-	static sptr make_from(libm2k::context::M2k *context, int buffer_size);
+	static sptr make_from(libm2k::context::M2k *context, int buffer_size, double data_rate = 0);
 
-	virtual  void set_timeout_ms(unsigned int timeout) = 0;
+	virtual void set_timeout_ms(unsigned int timeout) = 0;
+	virtual void set_data_rate(double rate) = 0;
 	virtual void set_buffer_size(int buffer_size) = 0;
 };
 } // namespace m2k

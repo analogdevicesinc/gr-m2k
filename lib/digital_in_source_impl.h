@@ -40,6 +40,7 @@ private:
 	unsigned int d_sample_index;
 	unsigned long d_items_in_buffer;
 	const unsigned short *d_raw_samples;
+	double d_data_rate;
 
 	pmt::pmt_t d_port_id;
 
@@ -55,7 +56,8 @@ public:
 						   double sampling_frequency,
 						   int kernel_buffers,
 						   bool streaming,
-						   bool deinit);
+						   bool deinit,
+						   double data_rate);
 
 	~digital_in_source_impl();
 
@@ -68,7 +70,9 @@ public:
 	bool start() override;
 	bool stop() override;
 
-	void set_params(double sampling_frequency, bool streaming);
+	void set_params(double sampling_frequency, bool streaming) override;
+
+	void set_data_rate(double data) override;
 
 	void set_timeout_ms(unsigned int timeout) override;
 

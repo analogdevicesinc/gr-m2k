@@ -7,12 +7,12 @@ using namespace gr::m2k;
 constexpr int KernelBuffers = 64;
 
 mixed_signal_source::sptr
-mixed_signal_source::make_from(libm2k::context::M2k *context, int buffer_size)
+mixed_signal_source::make_from(libm2k::context::M2k *context, int buffer_size, double data_rate)
 {
-	return gnuradio::get_initial_sptr(new mixed_signal_source_impl(context, buffer_size));
+	return gnuradio::get_initial_sptr(new mixed_signal_source_impl(context, buffer_size, data_rate));
 }
 
-mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size)
+mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size, double data_rate)
 	: gr::sync_block("mixed_device_source"
 	, gr::io_signature::make(0, 0, 0)
 	, gr::io_signature::make3(3, -1, sizeof(short), sizeof(short), sizeof(unsigned short)))
@@ -29,6 +29,7 @@ mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context
 	, d_please_refill_buffer(false)
 	, d_thread_stopped(true)
 	, d_current_captured_buffer(0)
+	, d_data_rate(data_rate)
 {
 	set_output_multiple(0x400);
 
@@ -155,6 +156,10 @@ void mixed_signal_source_impl::set_timeout_ms(unsigned int timeout)
 	d_timeout = timeout;
 }
 
+void mixed_signal_source_impl::set_data_rate(double rate) {
+	d_data_rate = rate;
+}
+
 void mixed_signal_source_impl::set_buffer_size(int buffer_size)
 {	
 	if (d_buffer_size != buffer_size) {
@@ -195,9 +200,19 @@ void mixed_signal_source_impl::refill_buffer()
 		lock.unlock();
 
 		try {
+			boost::chrono::high_resolution_clock::time_point t1 ;
+			if(d_data_rate) {
+				t1 = boost::chrono::high_resolution_clock::now();
+			}
+
 			d_analog_raw = d_analog_in->getSamplesRawInterleaved(d_buffer_size);
 			d_digital_raw = d_digital_in->getSamplesP(d_buffer_size);
 
+			if(d_data_rate) {
+				boost::chrono::duration<double> sec = boost::chrono::high_resolution_clock::now() - t1; // compute getSamplesDuration
+				unsigned int remainder = (1000.0/d_data_rate - (1000.0)* sec.count());
+				boost::this_thread::sleep_for(boost::chrono::milliseconds(remainder)); // wait remainder
+			}
 			lock.lock();
 		} catch (const libm2k::m2k_exception &e) {
 			if (e.iioCode() != -EBADF) {
