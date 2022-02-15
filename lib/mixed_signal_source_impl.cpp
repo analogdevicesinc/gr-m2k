@@ -4,15 +4,13 @@
 
 using namespace gr::m2k;
 
-constexpr int KernelBuffers = 64;
-
 mixed_signal_source::sptr
-mixed_signal_source::make_from(libm2k::context::M2k *context, int buffer_size, double data_rate)
+mixed_signal_source::make_from(libm2k::context::M2k *context, int buffer_size, double data_rate, int kb)
 {
-	return gnuradio::get_initial_sptr(new mixed_signal_source_impl(context, buffer_size, data_rate));
+	return gnuradio::get_initial_sptr(new mixed_signal_source_impl(context, buffer_size, data_rate, kb));
 }
 
-mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size, double data_rate)
+mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size, double data_rate, int kb)
 	: gr::sync_block("mixed_device_source"
 	, gr::io_signature::make(0, 0, 0)
 	, gr::io_signature::make3(3, -1, sizeof(short), sizeof(short), sizeof(unsigned short)))
@@ -30,6 +28,7 @@ mixed_signal_source_impl::mixed_signal_source_impl(libm2k::context::M2k *context
 	, d_thread_stopped(true)
 	, d_current_captured_buffer(0)
 	, d_data_rate(data_rate)
+	, d_kernel_buffers(kb)
 {
 	set_output_multiple(0x400);
 
@@ -52,8 +51,8 @@ bool mixed_signal_source_impl::start()
 
 	// TODO: take into account buffer_size and max memory on the m2k
 	// and compute a number of kernel buffers, or let others set it (scopy)
-	d_analog_in->setKernelBuffersCount(KernelBuffers);
-	d_digital_in->setKernelBuffersCountIn(KernelBuffers);
+	d_analog_in->setKernelBuffersCount(d_kernel_buffers);
+	d_digital_in->setKernelBuffersCountIn(d_kernel_buffers);
 
 	try {
 		d_m2k_context->startMixedSignalAcquisition(d_buffer_size);
@@ -192,7 +191,7 @@ void mixed_signal_source_impl::refill_buffer()
 			break;
 		}
 
-		if (d_current_captured_buffer == KernelBuffers) {
+		if (d_current_captured_buffer == d_kernel_buffers) {
 			restart();
 			d_current_captured_buffer = 0;
 		}

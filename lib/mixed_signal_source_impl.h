@@ -14,7 +14,7 @@ namespace m2k {
 class mixed_signal_source_impl : public mixed_signal_source
 {
 public: // gr block api
-	mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size, double data_rate);
+	mixed_signal_source_impl(libm2k::context::M2k *context, int buffer_size, double data_rate, int kb);
 	~mixed_signal_source_impl();
 
 	bool start() override;
@@ -46,6 +46,8 @@ private:
 	int d_items_in_buffer;
 	int d_current_index;
 	double d_data_rate;
+
+	int d_kernel_buffers;
 
 	pmt::pmt_t d_port_id;
 
