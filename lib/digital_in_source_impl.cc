@@ -201,6 +201,9 @@ void digital_in_source_impl::set_timeout_ms(unsigned int timeout)
 }
 
 void digital_in_source_impl::set_data_rate(double rate) {
+#ifdef _WIN32
+	rate = 0;
+#endif
 	d_data_rate = rate;
 }
 

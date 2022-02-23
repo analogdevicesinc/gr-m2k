@@ -234,6 +234,9 @@ void analog_in_source_impl::set_buffer_size(int buffer_size)
 }
 
 void analog_in_source_impl::set_data_rate(double rate) {
+#ifdef _WIN32
+	rate = 0;
+#endif
 	d_data_rate = rate;
 }
 
