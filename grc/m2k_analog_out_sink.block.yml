@@ -1,6 +1,7 @@
 id: m2k_analog_out_sink
 label: M2K Analog Out Sink
 flags: [ python ]
+category: '[m2k]'
 
 parameters:
   - id: uri
@@ -78,7 +79,7 @@ inputs:
 
 
 templates:
-  imports: import m2k
+  imports: from gnuradio import m2k
   make: m2k.analog_out_sink(${uri},
     ${buffer_size},
     [${sampling_frequency_ch1}, ${sampling_frequency_ch2}],

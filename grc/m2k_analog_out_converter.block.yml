@@ -1,6 +1,7 @@
 id: m2k_analog_out_converter
 label: M2K Analog Out Converter
 flags: [ python ]
+category: '[m2k]'
 
 parameters:
   -   id: uri
@@ -19,7 +20,7 @@ outputs:
       multiplicity: 1
 
 templates:
-  imports: import m2k
+  imports: from gnuradio import m2k
   make: m2k.analog_out_converter(${uri})
 
 documentation: |-
