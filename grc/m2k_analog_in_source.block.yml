@@ -1,6 +1,7 @@
 id: m2k_analog_in_source
 label: M2K Analog In Source
 flags: [ python, throttle ]
+category: '[m2k]'
 
 parameters:
   - id: uri
@@ -126,7 +127,7 @@ outputs:
 
 
 templates:
-  imports: import m2k
+  imports: from gnuradio import m2k
   make: m2k.analog_in_source(${uri},
     ${buffer_size},
     [${enable_ch1}, ${enable_ch2}],

@@ -1,7 +1,7 @@
 id: m2k_adf4350_sink
 label: M2K ADF4350 Sink
 flags: [ python ]
-
+category: '[m2k]'
 parameters:
   -   id: uri
       label: URI

@@ -1,23 +1,17 @@
-title: gr-m2k
-brief: GNU Radio blocks for ADALM-2000
-
-tags:
-  - libm2k
-  - ADALM-2000
-
+title: The M2K OOT Module
+brief: Short description of gr-m2k
+tags: # Tags are arbitrary, but look at CGRAN what other authors are using
+  - sdr
+author:
+  - Author Name <authors@email.address>
 copyright_owner:
-  - Analog Devices Inc.
-
-dependencies:
-  - gnuradio 3.8
-  - libm2k
-
-repository: https://github.com/analogdevicesinc/gr-m2k.git
-
-stable_release:
- - HEAD
-
+  - Copyright Owner 1
+license:
+gr_supported_version: # Put a comma separated list of supported GR versions here
+#repo: # Put the URL of the repository here, or leave blank for default
+#website: <module_website> # If you have a separate project website, put it here
+#icon: <icon_url> # Put a URL to a square image here that will be used as an icon on CGRAN
 ---
-gr-m2k contains blocks that represent all major components of ADAML-2000. These GNU Radio blocks are build around ADI's libm2k library: https://github.com/analogdevicesinc/libm2k
-
-More information available at https://wiki.analog.com/libm2k/gr-m2k
+A longer, multi-line description of gr-m2k.
+You may use some *basic* Markdown here.
+If left empty, it will try to find a README file instead.
