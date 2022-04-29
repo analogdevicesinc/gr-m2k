@@ -1,7 +1,6 @@
 id: m2k_analog_out_converter
 label: M2K Analog Out Converter
 flags: [ python ]
-category: '[m2k]'
 
 parameters:
   -   id: uri

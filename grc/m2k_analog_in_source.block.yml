@@ -1,7 +1,6 @@
 id: m2k_analog_in_source
 label: M2K Analog In Source
 flags: [ python, throttle ]
-category: '[m2k]'
 
 parameters:
   - id: uri

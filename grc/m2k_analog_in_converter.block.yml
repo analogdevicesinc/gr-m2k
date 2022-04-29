@@ -1,7 +1,6 @@
 id: m2k_analog_in_converter
 label: M2K Analog In Converter
 flags: [ python ]
-category: '[m2k]'
 
 parameters:
   -   id: uri
