@@ -6,10 +6,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 install(FILES
-    m2k_analog_in_converter.block.yml
-    m2k_adf4350_sink.block.yml
-    m2k_analog_out_converter.block.yml
-    m2k_analog_out_sink.block.yml
-    m2k_digital_in_source.block.yml
-    m2k_analog_in_source.block.yml DESTINATION share/gnuradio/grc/blocks
+	m2k.tree.yml
+	m2k_analog_in_converter.block.yml
+	m2k_adf4350_sink.block.yml
+	m2k_analog_out_converter.block.yml
+	m2k_analog_out_sink.block.yml
+	m2k_digital_in_source.block.yml
+	m2k_analog_in_source.block.yml DESTINATION share/gnuradio/grc/blocks
 )

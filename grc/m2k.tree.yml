@@ -1,11 +1,11 @@
 '[Core]':
-  - 'ADALM-2000':
-      - 'Analog':
-          - m2k_analog_in_converter
-          - m2k_analog_in_source
-          - m2k_analog_out_converter
-          - m2k_analog_out_sink
-      - 'Digital':
-          - m2k_digital_in_source
-          - 'Interfaces':
-              - m2k_adf4350_sink
+- 'ADALM-2000':
+  - 'Analog':
+    - m2k_analog_in_converter
+    - m2k_analog_in_source
+    - m2k_analog_out_converter
+    - m2k_analog_out_sink
+  - 'Digital':
+    - m2k_digital_in_source
+    - 'Interfaces':
+      - m2k_adf4350_sink
