@@ -8,7 +8,6 @@
 #include <gnuradio/io_signature.h>
 #include "mixed_signal_source_impl.h"
 #include <libm2k/m2kexceptions.hpp>
-#include <pcre2posix.h>
 
 
 namespace gr {
