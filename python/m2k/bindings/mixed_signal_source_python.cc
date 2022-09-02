@@ -34,7 +34,7 @@ void bind_mixed_signal_source(py::module& m)
 
 
     py::class_<mixed_signal_source, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<mixed_signal_source>>(m, "mixed_signal_source", D(mixed_signal_source))
+        PYBIND11_SH_DEF(mixed_signal_source)>(m, "mixed_signal_source", D(mixed_signal_source))
 
         .def(py::init(&mixed_signal_source::make),
            py::arg("context"),

@@ -34,7 +34,7 @@ void bind_analog_out_converter(py::module& m)
 
 
     py::class_<analog_out_converter, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<analog_out_converter>>(m, "analog_out_converter", D(analog_out_converter))
+        PYBIND11_SH_DEF(analog_out_converter)>(m, "analog_out_converter", D(analog_out_converter))
 
         .def(py::init(&analog_out_converter::make),
            py::arg("uri"),

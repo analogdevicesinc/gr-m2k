@@ -34,7 +34,7 @@ void bind_adf4350_sink(py::module& m)
 
 
     py::class_<adf4350_sink, gr::block, gr::basic_block,
-        std::shared_ptr<adf4350_sink>>(m, "adf4350_sink", D(adf4350_sink))
+        PYBIND11_SH_DEF(adf4350_sink)>(m, "adf4350_sink", D(adf4350_sink))
 
         .def(py::init(&adf4350_sink::make),
            py::arg("uri"),

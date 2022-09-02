@@ -34,7 +34,7 @@ void bind_analog_in_converter(py::module& m)
 
 
     py::class_<analog_in_converter, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<analog_in_converter>>(m, "analog_in_converter", D(analog_in_converter))
+        PYBIND11_SH_DEF(analog_in_converter)>(m, "analog_in_converter", D(analog_in_converter))
 
         .def(py::init(&analog_in_converter::make),
            py::arg("uri"),

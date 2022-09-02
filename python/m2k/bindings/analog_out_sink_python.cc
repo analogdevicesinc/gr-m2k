@@ -34,7 +34,7 @@ void bind_analog_out_sink(py::module& m)
 
 
     py::class_<analog_out_sink, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<analog_out_sink>>(m, "analog_out_sink", D(analog_out_sink))
+        PYBIND11_SH_DEF(analog_out_sink)>(m, "analog_out_sink", D(analog_out_sink))
 
         .def(py::init(&analog_out_sink::make),
            py::arg("uri"),

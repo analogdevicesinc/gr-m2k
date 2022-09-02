@@ -34,7 +34,7 @@ void bind_analog_in_source(py::module& m)
 
 
     py::class_<analog_in_source, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<analog_in_source>>(m, "analog_in_source", D(analog_in_source))
+        PYBIND11_SH_DEF(analog_in_source)>(m, "analog_in_source", D(analog_in_source))
 
         .def(py::init(&analog_in_source::make),
            py::arg("uri"),

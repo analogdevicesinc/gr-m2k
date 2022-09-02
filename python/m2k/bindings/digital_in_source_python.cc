@@ -34,7 +34,7 @@ void bind_digital_in_source(py::module& m)
 
 
     py::class_<digital_in_source, gr::sync_block, gr::block, gr::basic_block,
-        std::shared_ptr<digital_in_source>>(m, "digital_in_source", D(digital_in_source))
+        PYBIND11_SH_DEF(digital_in_source)>(m, "digital_in_source", D(digital_in_source))
 
         .def(py::init(&digital_in_source::make),
            py::arg("uri"),
