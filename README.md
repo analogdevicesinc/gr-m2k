@@ -3,7 +3,7 @@
 GNU Radio blocks for ADALM-2000. More information available at https://wiki.analog.com/university/tools/m2k/libm2k/gr-m2k.
 
 ## Dependencies
- - gnuradio 3.8  
+ - gnuradio 3.10
    For more information visit: https://wiki.gnuradio.org/index.php/InstallingGR
  - libm2k  
    For more information visit: https://github.com/analogdevicesinc/libm2k  
