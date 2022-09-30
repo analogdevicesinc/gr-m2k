@@ -42,11 +42,9 @@ GR_PYBIND_MAKE_OOT(m2k
    "${m2k_python_files}")
 
 # copy in bindings .so file for use in QA test module
-add_custom_target(
-  copy_bindings_for_tests ALL
-  COMMAND
-    ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_BINARY_DIR}/*.so"
+add_custom_command(TARGET m2k_python POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:m2k_python>
     ${CMAKE_BINARY_DIR}/test_modules/gnuradio/m2k/
-  DEPENDS m2k_python)
+)
 
 install(TARGETS m2k_python DESTINATION ${GR_PYTHON_DIR}/gnuradio/m2k COMPONENT pythonapi)
