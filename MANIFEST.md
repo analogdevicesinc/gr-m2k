@@ -1,17 +1,23 @@
-title: The M2K OOT Module
-brief: Short description of gr-m2k
-tags: # Tags are arbitrary, but look at CGRAN what other authors are using
-  - sdr
+title: gr-m2k
+brief: GNU Radio blocks for ADALM2000
+tags:
+  - IIO
+  - ADALM2000
 author:
-  - Author Name <authors@email.address>
+  - Adrian Suciu
+  - Alexandra Trifan
+  - Teo Perisanu
 copyright_owner:
-  - Copyright Owner 1
-license:
-gr_supported_version: # Put a comma separated list of supported GR versions here
-#repo: # Put the URL of the repository here, or leave blank for default
-#website: <module_website> # If you have a separate project website, put it here
-#icon: <icon_url> # Put a URL to a square image here that will be used as an icon on CGRAN
+  - Analog Devices Inc.
+dependencies:
+  - gnuradio
+  - libm2k
+repo: https://github.com/analogdevicesinc/gr-m2k
+stable_release: HEAD
+icon:
 ---
-A longer, multi-line description of gr-m2k.
-You may use some *basic* Markdown here.
-If left empty, it will try to find a README file instead.
+
+The ADALM2000 (M2K) Active Learning Module is an affordable USB-powered measurement unit. With 12-bit ADCs and DACs running at 100 MSPS, the ADALM2000 brings the power of high performance lab equipment to the palm of your hand, enabling electrical engineering students and hobbyists to explore signals and systems into the tens of MHz without the cost and bulk associated with traditional lab gear. 
+
+gr-m2k contains blocks that represent all major components of ADALM2000. These GNU Radio blocks are build around ADI's libm2k library. Libm2k can be used for encoding and decoding digital signals, communicating with a wide variety of chips, using some well known protocols, such as SPI, I²C or UART. 
+The gr-m2k blocks offer the possibility of interfacing with a variety of peripherals, in order to use the ADALM2000 as a master to configure/use them.
