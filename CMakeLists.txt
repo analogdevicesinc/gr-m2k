@@ -36,7 +36,7 @@ set(VERSION_ABI   0)
 set(VERSION_PATCH 0)
 
 # build digital interfaces
-option(DIGITAL "Build the digital interfaces" ON)
+option(DIGITAL "Build the digital interfaces" OFF)
 
 cmake_policy(SET CMP0011 NEW)
 
