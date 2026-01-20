@@ -25,7 +25,7 @@ FIND_LIBRARY(
           /usr/lib64
           )
 
-include("${CMAKE_CURRENT_LIST_DIR}/gnuradio-m2kTarget.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/gnuradio-m2kTargets.cmake")
 
 INCLUDE(FindPackageHandleStandardArgs)
 FIND_PACKAGE_HANDLE_STANDARD_ARGS(GR_M2K DEFAULT_MSG GR_M2K_LIBRARIES GR_M2K_INCLUDE_DIRS)
