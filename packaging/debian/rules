@@ -9,7 +9,8 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 override_dh_auto_configure:
 	dh_auto_configure -- \
 		-DCMAKE_INSTALL_PREFIX=/usr \
-		-DCMAKE_BUILD_TYPE=RelWithDebInfo
+		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+		-DGR_PYTHON_DIR=/usr/lib/python3/dist-packages
 
 override_dh_missing:
 	dh_missing --fail-missing
