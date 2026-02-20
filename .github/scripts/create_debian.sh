@@ -31,6 +31,8 @@ $SUDO apt-get install -y \
 pushd /tmp
 git clone https://github.com/analogdevicesinc/libm2k.git
 cd libm2k
+# TODO: Remove this checkout before merge — libm2k create_debian.sh is only on this branch for now
+git checkout feature/build_debian13
 
 # Extract libm2k version from its CMakeLists.txt
 libm2k_version=$(grep -oP 'set\s*\(\s*LIBM2K_VERSION_(MAJOR|MINOR|PATCH)\s+\K[0-9]+' CMakeLists.txt | paste -sd '.')
