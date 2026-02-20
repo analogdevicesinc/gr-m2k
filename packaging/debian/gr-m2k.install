@@ -1,2 +1,2 @@
 usr/lib/*/libgnuradio-m2k.so.*
-usr/share/gnuradio/grc/blocks/m2k_*
+usr/share/gnuradio/grc/blocks/m2k*
