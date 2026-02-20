@@ -1,4 +1,3 @@
 usr/include/gnuradio/m2k/
 usr/lib/*/libgnuradio-m2k.so
-usr/lib/*/cmake/gnuradio-m2k/
-usr/lib/*/pkgconfig/gnuradio-m2k.pc
+usr/lib/cmake/gnuradio-m2k/
