@@ -1,0 +1,47 @@
+Source: gr-m2k
+Section: libs
+Priority: optional
+Maintainer: Engineerzone <https://ez.analog.com/sw-interface-tools>
+Build-Depends: debhelper-compat (= 13),
+               cmake,
+               gnuradio-dev (>= 3.10),
+               libm2k-dev,
+               python3-dev,
+               pybind11-dev,
+               dh-python
+Standards-Version: 4.6.0
+Homepage: https://github.com/analogdevicesinc/gr-m2k
+Vcs-Git: https://github.com/analogdevicesinc/gr-m2k.git
+Vcs-Browser: https://github.com/analogdevicesinc/gr-m2k
+Rules-Requires-Root: no
+
+Package: gr-m2k
+Architecture: @ARCHITECTURE@
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: GNU Radio blocks for ADALM2000
+ gr-m2k is a GNU Radio out-of-tree module for interfacing with the
+ ADALM2000, a portable lab for electronics learning and development.
+ .
+ This package contains the shared library and GRC block definitions.
+
+Package: gr-m2k-dev
+Section: libdevel
+Architecture: @ARCHITECTURE@
+Multi-Arch: same
+Depends: gr-m2k (= ${binary:Version}), ${misc:Depends}
+Description: GNU Radio blocks for ADALM2000 - development files
+ gr-m2k is a GNU Radio out-of-tree module for interfacing with the
+ ADALM2000, a portable lab for electronics learning and development.
+ .
+ This package contains the development files.
+
+Package: python3-gr-m2k
+Section: python
+Architecture: @ARCHITECTURE@
+Depends: gr-m2k (= ${binary:Version}), ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends}
+Description: Python 3 bindings for gr-m2k
+ gr-m2k is a GNU Radio out-of-tree module for interfacing with the
+ ADALM2000, a portable lab for electronics learning and development.
+ .
+ This package contains the Python 3 bindings.
