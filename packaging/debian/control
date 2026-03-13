@@ -16,7 +16,7 @@ Vcs-Browser: https://github.com/analogdevicesinc/gr-m2k
 Rules-Requires-Root: no
 
 Package: gr-m2k
-Architecture: @ARCHITECTURE@
+Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: GNU Radio blocks for ADALM2000
@@ -27,7 +27,7 @@ Description: GNU Radio blocks for ADALM2000
 
 Package: gr-m2k-dev
 Section: libdevel
-Architecture: @ARCHITECTURE@
+Architecture: any
 Multi-Arch: same
 Depends: gr-m2k (= ${binary:Version}), ${misc:Depends}
 Description: GNU Radio blocks for ADALM2000 - development files
@@ -38,7 +38,7 @@ Description: GNU Radio blocks for ADALM2000 - development files
 
 Package: python3-gr-m2k
 Section: python
-Architecture: @ARCHITECTURE@
+Architecture: any
 Depends: gr-m2k (= ${binary:Version}), ${python3:Depends}, ${shlibs:Depends}, ${misc:Depends}
 Description: Python 3 bindings for gr-m2k
  gr-m2k is a GNU Radio out-of-tree module for interfacing with the
