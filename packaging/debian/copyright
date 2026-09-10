@@ -1,23 +1,166 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gr-m2k
-Upstream-Contact: Engineerzone <https://ez.analog.com/community/linux-device-drivers>
+Upstream-Contact: EngineerZone <https://ez.analog.com/sw-interface-tools/>
 Source: https://github.com/analogdevicesinc/gr-m2k
 
 Files: *
-Copyright: 2019-2025 Analog Devices Inc.
-License: GPL-3.0+
- This program is free software: you can redistribute it and/or modify
+Copyright: 2022, Analog Devices Inc.
+License: GPL-3
+
+Files: CMakeLists.txt
+ apps/CMakeLists.txt
+ cmake/Modules/targetConfig.cmake.in
+ docs/CMakeLists.txt
+ docs/doxygen/CMakeLists.txt
+ docs/doxygen/doxyxml/__init__.py
+ docs/doxygen/doxyxml/base.py
+ docs/doxygen/doxyxml/doxyindex.py
+ docs/doxygen/doxyxml/text.py
+ docs/doxygen/update_pydoc.py
+ grc/CMakeLists.txt
+ include/gnuradio/m2k/CMakeLists.txt
+ include/gnuradio/m2k/api.h
+ lib/CMakeLists.txt
+ python/m2k/CMakeLists.txt
+ python/m2k/__init__.py
+ python/m2k/bindings/CMakeLists.txt
+ python/m2k/bindings/adf4350_sink_python.cc
+ python/m2k/bindings/analog_in_converter_python.cc
+ python/m2k/bindings/analog_in_source_python.cc
+ python/m2k/bindings/analog_out_converter_python.cc
+ python/m2k/bindings/analog_out_sink_python.cc
+ python/m2k/bindings/digital_in_source_python.cc
+ python/m2k/bindings/docstrings/adf4350_sink_pydoc_template.h
+ python/m2k/bindings/docstrings/analog_in_converter_pydoc_template.h
+ python/m2k/bindings/docstrings/analog_in_source_pydoc_template.h
+ python/m2k/bindings/docstrings/analog_out_converter_pydoc_template.h
+ python/m2k/bindings/docstrings/analog_out_sink_pydoc_template.h
+ python/m2k/bindings/docstrings/digital_in_source_pydoc_template.h
+ python/m2k/bindings/docstrings/mixed_signal_source_pydoc_template.h
+ python/m2k/bindings/mixed_signal_source_python.cc
+ python/m2k/bindings/python_bindings.cc
+Copyright: 2008-2020, 2022, Free Software Foundation, Inc.
+License: GPL-3+
+
+Files: cmake/Modules/CMakeParseArgumentsCopy.cmake
+Copyright: 2010, Alexander Neundorf <neundorf@kde.org>
+License: BSD-3-clause
+
+Files: docs/doxygen/other/doxypy.py
+Copyright: 2008, Philippe Neumann and Gina Haeussge
+License: GPL-2+
+
+Files: include/gnuradio/m2k/adf4350_sink.h
+ include/gnuradio/m2k/analog_in_converter.h
+ include/gnuradio/m2k/analog_in_source.h
+ include/gnuradio/m2k/analog_out_converter.h
+ include/gnuradio/m2k/analog_out_sink.h
+ include/gnuradio/m2k/digital_in_source.h
+ include/gnuradio/m2k/mixed_signal_source.h
+ lib/adf4350_sink_impl.cc
+ lib/adf4350_sink_impl.h
+ lib/analog_in_converter_impl.cc
+ lib/analog_in_converter_impl.h
+ lib/analog_in_source_impl.cc
+ lib/analog_in_source_impl.h
+ lib/analog_out_converter_impl.cc
+ lib/analog_out_converter_impl.h
+ lib/analog_out_sink_impl.cc
+ lib/analog_out_sink_impl.h
+ lib/digital_in_source_impl.cc
+ lib/digital_in_source_impl.h
+ lib/drivers/spi.h
+ lib/mixed_signal_source_impl.cc
+ lib/mixed_signal_source_impl.h
+Copyright: 2019, 2022, Analog Devices Inc.
+License: GPL-3+
+
+Files: lib/drivers/adf4350.c
+ lib/drivers/adf4350.h
+Copyright: 2012-2015, Analog Devices, Inc.
+License: ADI-BSD-5-Clause
+
+License: ADI-BSD-5-Clause
+ All rights reserved.
+ .
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+     - Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     - Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in
+       the documentation and/or other materials provided with the
+       distribution.
+     - Neither the name of Analog Devices, Inc. nor the names of its
+       contributors may be used to endorse or promote products derived
+       from this software without specific prior written permission.
+     - The use of this software may or may not infringe the patent rights
+       of one or more patent holders.  This license does not release you
+       from the requirement that you obtain separate licenses from these
+       patent holders to use this software.
+     - Use of the software either in source or binary form, must be run
+       on or directly connected to an Analog Devices Inc. component.
+ .
+ THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE ARE DISCLAIMED.
+ .
+ IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, INTELLECTUAL PROPERTY
+ RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+ BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF
+ THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: BSD-3-clause
+ The BSD License
+ .
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are
+ met:
+ .
+   * Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+ .
+   * Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in the
+     documentation and/or other materials provided with the distribution. 
+ .
+   * Neither the name of the copyright holder nor the names of its
+     contributors may be used to endorse or promote products derived from
+     this software without specific prior written permission. 
+ .
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+ IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
+ TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+License: GPL-2+
+ This program is free software; you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- .
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
- .
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <https://www.gnu.org/licenses/>.
- .
- On Debian systems, the complete text of the GNU General Public
- License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+ the Free Software Foundation; version 2 dated June, 1991, or (at
+ your option) any later version.
+ On Debian systems, the complete text of version 2 of the GNU General
+ Public License can be found in '/usr/share/common-licenses/GPL-2'.
+
+License: GPL-3
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 3 dated June, 2007.
+ On Debian systems, the complete text of version 3 of the GNU General
+ Public License can be found in '/usr/share/common-licenses/GPL-3'.
+
+License: GPL-3+
+ This program is free software; you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation; version 3 dated June, 2007, or (at
+ your option) any later version.
+ On Debian systems, the complete text of version 3 of the GNU General
+ Public License can be found in '/usr/share/common-licenses/GPL-3'.
