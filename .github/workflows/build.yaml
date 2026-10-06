@@ -5,6 +5,7 @@ permissions:
 
 env:
   APP_NAME: gr-m2k
+  VERSION: 0.9.0
 
 on:
   workflow_dispatch:
@@ -61,7 +62,8 @@ jobs:
             distro: debian13
             architecture: armhf
             platform_flag: "--platform linux/arm/v7"
-
+    env:
+      architecture: ${{ matrix.architecture }}
     steps:
     - name: Checkout code repository
       uses: actions/checkout@v6
@@ -73,19 +75,20 @@ jobs:
         docker run -d \
             ${{matrix.platform_flag}} \
             --name ${{matrix.distro}}-${{matrix.architecture}} \
+            -e VERSION="$VERSION" \
             -v "$GITHUB_WORKSPACE/${{env.APP_NAME}}:/workspace/${{env.APP_NAME}}" \
             -w /workspace/${{env.APP_NAME}} \
             ${{matrix.docker_image}} tail -f /dev/null
-
+    - name: Install dependencies
+      run: |
+        docker exec ${{matrix.distro}}-${{matrix.architecture}} sh -c ".github/scripts/install-deps.sh"
     - name: Create debian package
       run: |
         docker exec ${{matrix.distro}}-${{matrix.architecture}} sh -c ".github/scripts/create_debian.sh ${{needs.identify_version.outputs.app-version}}"
-
     - name: Copy debian artifacts from container to host
       run: |
         docker cp ${{matrix.distro}}-${{matrix.architecture}}:/workspace/. ./artifacts/
         ls -la ./artifacts/
-
     - name: Upload debian artifacts to github
       uses: actions/upload-artifact@v7
       with:
@@ -110,17 +113,16 @@ jobs:
       uses: actions/checkout@v6
       with:
         path: ${{env.APP_NAME}}
-
+    - name: Install dependencies
+      run: |
+        .github/scripts/install-deps.sh
     - name: Create .deb package
       run: |
         .github/scripts/create_debian.sh ${{needs.identify_version.outputs.app-version}}
-
     - name: Copy debian artifacts
       run: |
         mkdir -p artifacts
         cp ../*.deb ../*.dsc ../*.debian.tar.xz ../*.orig.tar.gz artifacts/
-        ls -la artifacts/
-
     - name: Upload debian artifacts to github
       uses: actions/upload-artifact@v7
       with:
