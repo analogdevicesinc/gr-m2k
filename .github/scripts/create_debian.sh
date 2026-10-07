@@ -1,45 +1,12 @@
 #!/bin/bash
 
+set -e
+
 version=$1
 source_code=$(basename "$PWD")
 
-# Use sudo only if not running as root
-if [ "$(id -u)" -eq 0 ]; then
-    SUDO=""
-else
-    SUDO="sudo"
-fi
-
 ###############################################################################
-# 1. Install gr-m2k build dependencies
-###############################################################################
-$SUDO apt-get update
-$SUDO apt-get install -y \
-    build-essential cmake devscripts debhelper \
-    gnuradio-dev python3-dev pybind11-dev dh-python \
-    git
-
-###############################################################################
-# 2. Build and install libm2k from source (not in upstream repos)
-###############################################################################
-$SUDO apt-get install -y \
-    libiio-dev libgoogle-glog-dev libserialport-dev \
-    swig python3-setuptools mono-mcs cli-common-dev
-
-pushd /tmp
-git clone https://github.com/analogdevicesinc/libm2k.git
-cd libm2k
-
-# Extract libm2k version from its CMakeLists.txt
-libm2k_version=$(grep -oP 'set\s*\(\s*LIBM2K_VERSION_(MAJOR|MINOR|PATCH)\s+\K[0-9]+' CMakeLists.txt | paste -sd '.')
-echo "Building libm2k version: $libm2k_version"
-
-.github/scripts/create_debian.sh "$libm2k_version"
-$SUDO dpkg -i ../libm2k_*.deb ../libm2k-dev_*.deb
-popd
-
-###############################################################################
-# 3. Build gr-m2k .deb packages
+# Build gr-m2k .deb packages
 ###############################################################################
 
 # Replace placeholders inside the debian template files
