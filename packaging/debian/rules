@@ -15,5 +15,13 @@ override_dh_auto_configure:
 override_dh_missing:
 	dh_missing --fail-missing
 
+# On amd64, libm2k is built from source without shlibs metadata
+override_dh_shlibdeps:
+ifeq ($(DEB_HOST_ARCH),amd64)
+	dh_shlibdeps --dpkg-shlibdeps-params=--ignore-missing-info
+else
+	dh_shlibdeps
+endif
+
 override_dh_strip:
 	# Keep debug symbols in packages (like the old CMake/CPack flow)

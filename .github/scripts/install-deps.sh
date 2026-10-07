@@ -22,7 +22,7 @@ $SUDO apt-get install -y \
     build-essential cmake devscripts debhelper \
     gnuradio-dev python3-dev pybind11-dev dh-python \
     git libiio-dev libgoogle-glog-dev libserialport-dev \
-    swig python3-setuptools mono-mcs cli-common-dev
+    swig python3-setuptools mono-mcs cli-common-dev checkinstall
 
 ###############################################################################
 # Install gr-m2k build dependencies and update list of packages
@@ -30,13 +30,16 @@ $SUDO apt-get install -y \
 echo "Installing libm2k"
 
 if [[ "$architecture" == "amd64" ]]; then
-    cd /tmp
     git clone https://github.com/analogdevicesinc/libm2k.git
     cd libm2k
-    libm2k_version=${VERSION}
-    echo "Building libm2k version: $libm2k_version"
-    .github/scripts/create_debian.sh "$libm2k_version"
-    $SUDO dpkg -i ../libm2k_*.deb ../libm2k-dev_*.deb
+    git checkout tags/v$VERSION
+    mkdir build && cd build
+    cmake ../ -DCMAKE_INSTALL_PREFIX=/usr
+    make
+    # Create libm2k-dev package with checkinstall
+    $SUDO checkinstall --pkgname=libm2k-dev --pkgversion=$VERSION \
+        --provides=libm2k-dev --default --install=yes make install
+
 else
     echo "==> Adding ADI package repository..."
     curl -1sLf 'https://packages.analog.com/public/setup.deb.sh' | ${SUDO:+sudo -E} bash
